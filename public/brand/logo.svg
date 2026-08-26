@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 72" role="img" aria-label="Fersa Bearings">
+  <rect width="72" height="72" rx="14" fill="#123a5b"/>
+  <path d="M18 48V24h28v7H27v3h16v7H27v7h19v7H18Z" fill="white"/>
+  <text x="88" y="44" fill="#09233b" font-family="Arial, sans-serif" font-size="25" font-weight="700" letter-spacing="2">FERSA BEARINGS</text>
+</svg>
