@@ -14,6 +14,8 @@ type ProfileRow = { full_name: string } | null;
 type TicketRow = {
   id: string;
   number: number;
+  customer_id: string;
+  organization_id: string;
   product_id: string;
   status: TicketStatus;
   priority: TicketPriority;
@@ -42,10 +44,18 @@ type TicketRow = {
     author: ProfileRow;
   }[];
   ticket_history: { id: string; action: string; created_at: string }[];
+  ticket_attachments: {
+    id: string;
+    file_name: string;
+    content_type: string | null;
+    size_bytes: number;
+    storage_path: string;
+    created_at: string;
+  }[];
 };
 
 const ticketSelect = `
-  id, number, product_id, status, priority, locale, customer_language, description, equipment, serial_number, country, state, city, address, created_at, updated_at,
+  id, number, customer_id, organization_id, product_id, status, priority, locale, customer_language, description, equipment, serial_number, country, state, city, address, created_at, updated_at,
   products(part_number),
   customer:profiles!tickets_customer_id_fkey(full_name, role),
   assignee:profiles!tickets_assigned_to_fkey(full_name),
@@ -53,7 +63,8 @@ const ticketSelect = `
   organization:organizations(name),
   issue_categories(issue_category_translations(locale, name)),
   ticket_messages(id, body, visibility, created_at, author:profiles!ticket_messages_author_id_fkey(full_name)),
-  ticket_history(id, action, created_at)
+  ticket_history(id, action, created_at),
+  ticket_attachments(id, file_name, content_type, size_bytes, storage_path, created_at)
 `;
 const supportedLocales: Locale[] = ["pt-BR", "es", "en"];
 
@@ -157,6 +168,40 @@ export class SupabaseTicketRepository implements TicketRepository {
     return ticket;
   }
 
+  async addAttachments(ticketId: string, files: File[]) {
+    if (files.length === 0) return;
+    const ticket = await this.findById(ticketId);
+    if (!ticket) throw new Error("TICKET_NOT_FOUND");
+    const {
+      data: { user }
+    } = await this.client.auth.getUser();
+    if (!user) throw new Error("AUTHENTICATION_REQUIRED");
+    for (const file of files) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+      const storagePath = `${ticket.organizationId}/${ticket.id}/${crypto.randomUUID()}-${safeName}`;
+      const { error: uploadError } = await this.client.storage
+        .from("ticket-attachments")
+        .upload(storagePath, file, { contentType: file.type, upsert: false });
+      if (uploadError) throw uploadError;
+      const { error: recordError } = await this.client
+        .from("ticket_attachments")
+        .insert({
+          ticket_id: ticket.id,
+          uploaded_by: user.id,
+          storage_path: storagePath,
+          file_name: file.name,
+          content_type: file.type || null,
+          size_bytes: file.size
+        });
+      if (recordError) {
+        await this.client.storage
+          .from("ticket-attachments")
+          .remove([storagePath]);
+        throw recordError;
+      }
+    }
+  }
+
   private map(row: TicketRow): Ticket {
     const translations = Object.fromEntries(
       (row.issue_categories?.issue_category_translations ?? []).map(
@@ -168,9 +213,11 @@ export class SupabaseTicketRepository implements TicketRepository {
     return {
       id: row.id,
       number: row.number,
+      customerId: row.customer_id,
+      organizationId: row.organization_id,
       customerName: row.customer?.full_name ?? "",
       organizationName: row.organization?.name ?? "",
-      role: row.customer?.role ?? "DISTRIBUTOR",
+      role: row.customer?.role ?? "CUSTOMER",
       country: row.country ?? "",
       locale: row.locale,
       productId: row.product_id,
@@ -205,6 +252,14 @@ export class SupabaseTicketRepository implements TicketRepository {
       history: row.ticket_history.map((item) => ({
         id: item.id,
         action: item.action,
+        createdAt: item.created_at
+      })),
+      attachments: row.ticket_attachments.map((item) => ({
+        id: item.id,
+        fileName: item.file_name,
+        contentType: item.content_type ?? undefined,
+        sizeBytes: item.size_bytes,
+        storagePath: item.storage_path,
         createdAt: item.created_at
       }))
     };

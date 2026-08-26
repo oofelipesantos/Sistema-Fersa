@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
+import { isMockMode } from "@/lib/utils";
 import { Brand } from "./brand";
 import { LanguageSwitcher } from "./language-switcher";
 import { SignOutButton } from "./sign-out-button";
@@ -32,9 +33,11 @@ export function PortalShell({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <Brand />
           <div className="flex items-center gap-3">
-            <span className="hidden rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 sm:inline">
-              {common("demo")}
-            </span>
+            {isMockMode() && (
+              <span className="hidden rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 sm:inline">
+                {common("demo")}
+              </span>
+            )}
             <LanguageSwitcher />
             <SignOutButton compact />
           </div>

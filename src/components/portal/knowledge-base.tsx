@@ -3,7 +3,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select } from "@/components/ui/select";
 import { Link } from "@/i18n/navigation";
@@ -120,8 +120,11 @@ export function KnowledgeBase({
                 <Button onClick={() => setResolved(true)}>
                   {t("resolved")}
                 </Button>
-                <Link href="/tickets/new">
-                  <Button variant="outline">{t("notResolved")}</Button>
+                <Link
+                  className={buttonVariants({ variant: "outline" })}
+                  href="/tickets/new"
+                >
+                  {t("notResolved")}
                 </Link>
               </div>
             )}

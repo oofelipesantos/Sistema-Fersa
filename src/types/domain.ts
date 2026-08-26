@@ -3,7 +3,7 @@ import type { Locale } from "@/i18n/routing";
 export type { Locale };
 
 export type UserRole =
-  "DISTRIBUTOR" | "MECHANIC" | "SUPPORT" | "TECHNICIAN" | "ADMIN";
+  "DISTRIBUTOR" | "MECHANIC" | "CUSTOMER" | "SUPPORT" | "TECHNICIAN" | "ADMIN";
 export type TicketStatus =
   | "NEW"
   | "WAITING_SUPPORT"
@@ -18,6 +18,7 @@ export type TicketStatus =
 export type TicketPriority = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 export type MessageVisibility = "CUSTOMER" | "INTERNAL";
 export type OrganizationType = "DISTRIBUTOR" | "WORKSHOP" | "CUSTOMER";
+export type VerificationStatus = "PENDING" | "VERIFIED" | "BLOCKED";
 
 export type LocalizedText = Record<Locale, string>;
 
@@ -94,6 +95,8 @@ export interface TicketHistoryItem {
 export interface Ticket {
   id: string;
   number: number;
+  customerId: string;
+  organizationId: string;
   customerName: string;
   organizationName: string;
   role: UserRole;
@@ -114,6 +117,53 @@ export interface Ticket {
   location?: string;
   messages: TicketMessage[];
   history: TicketHistoryItem[];
+  attachments: TicketAttachment[];
+}
+
+export interface TicketAttachment {
+  id: string;
+  fileName: string;
+  contentType?: string;
+  sizeBytes: number;
+  storagePath?: string;
+  createdAt: string;
+}
+
+export interface Organization {
+  id: string;
+  name: string;
+  type: OrganizationType;
+  taxDocument: string;
+  country: string;
+  verificationStatus: VerificationStatus;
+  verificationRequestedAt: string;
+  verifiedAt?: string;
+  verifiedBy?: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UserProfile {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  role: UserRole;
+  organizationId: string;
+  preferredLocale: Locale;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface AuthSession {
+  user: UserProfile;
+  organization: Organization | null;
+}
+
+export interface OrganizationWithUsers extends Organization {
+  users: UserProfile[];
+  ticketCount: number;
 }
 
 export interface CreateTicketInput {

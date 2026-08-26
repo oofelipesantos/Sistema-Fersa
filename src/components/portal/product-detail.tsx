@@ -3,7 +3,7 @@
 import { FileText, PlayCircle, Wrench } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
 import type { KnownIssue, Locale, Product } from "@/types/domain";
@@ -49,11 +49,11 @@ export function ProductDetail({
           {content.description}
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/tickets/new">
-            <Button>{t("openTicket")}</Button>
+          <Link className={buttonVariants()} href="/tickets/new">
+            {t("openTicket")}
           </Link>
           <Link
-            className="inline-flex h-10 items-center gap-2 rounded-lg border border-blue-200 px-4 text-sm font-bold"
+            className="inline-flex min-h-12 items-center gap-2 rounded-lg border border-blue-200 px-4 text-sm font-bold"
             href="/knowledge-base"
           >
             <Wrench className="h-4 w-4" aria-hidden />
@@ -64,7 +64,7 @@ export function ProductDetail({
       <div className="flex gap-1 overflow-x-auto border-b">
         {tabs.map((item) => (
           <button
-            className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-bold ${tab === item ? "border-navy-700 text-navy-700" : "border-transparent text-slate-500"}`}
+            className={`min-h-12 whitespace-nowrap border-b-2 px-3 py-3 text-sm font-bold ${tab === item ? "border-navy-700 text-navy-700" : "border-transparent text-slate-500"}`}
             key={item}
             onClick={() => setTab(item)}
             type="button"

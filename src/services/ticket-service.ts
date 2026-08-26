@@ -4,7 +4,7 @@ import { RoutingService } from "./routing-service";
 
 export class TicketService {
   constructor(private readonly routingService = new RoutingService()) {}
-  async create(input: CreateTicketInput) {
+  async create(input: CreateTicketInput, files: File[] = []) {
     const routing = await this.routingService.route({
       country: input.country ?? "",
       state: input.state,
@@ -15,7 +15,9 @@ export class TicketService {
       issueCategoryId: input.categoryId,
       locale: input.locale
     });
-    const ticket = await getTicketRepository().create(input);
+    const repository = getTicketRepository();
+    const ticket = await repository.create(input);
+    await repository.addAttachments(ticket.id, files);
     return { ticket, routing };
   }
 }

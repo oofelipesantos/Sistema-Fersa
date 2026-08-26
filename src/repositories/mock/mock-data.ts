@@ -220,6 +220,8 @@ export const mockTickets: Ticket[] = [
   {
     id: "ticket-132",
     number: 132,
+    customerId: "demo-user",
+    organizationId: "org-horizonte",
     customerName: "Mariana Costa",
     organizationName: "Oficina Horizonte",
     role: "MECHANIC",
@@ -263,11 +265,22 @@ export const mockTickets: Ticket[] = [
         createdAt: "2026-08-25T12:27:00Z"
       },
       { id: "history-3", action: "ASSIGNED", createdAt: "2026-08-25T12:40:00Z" }
+    ],
+    attachments: [
+      {
+        id: "attachment-132-1",
+        fileName: "foto-rolamento.jpg",
+        contentType: "image/jpeg",
+        sizeBytes: 428300,
+        createdAt: "2026-08-25T12:20:00Z"
+      }
     ]
   },
   {
     id: "ticket-127",
     number: 127,
+    customerId: "customer-mx",
+    organizationId: "org-taller-norte",
     customerName: "Carlos Méndez",
     organizationName: "Taller Norte",
     role: "DISTRIBUTOR",
@@ -296,11 +309,14 @@ export const mockTickets: Ticket[] = [
         action: "TICKET_CREATED",
         createdAt: "2026-08-23T11:00:00Z"
       }
-    ]
+    ],
+    attachments: []
   },
   {
     id: "ticket-121",
     number: 121,
+    customerId: "customer-us",
+    organizationId: "org-northline",
     customerName: "Taylor Reed",
     organizationName: "Northline Service",
     role: "DISTRIBUTOR",
@@ -322,7 +338,8 @@ export const mockTickets: Ticket[] = [
         action: "TICKET_CREATED",
         createdAt: "2026-08-20T11:00:00Z"
       }
-    ]
+    ],
+    attachments: []
   }
 ];
 

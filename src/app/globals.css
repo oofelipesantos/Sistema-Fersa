@@ -10,14 +10,14 @@
     @apply border-steel-200;
   }
   body {
-    @apply bg-steel-50 text-slate-900 antialiased;
+    @apply bg-steel-50 text-base leading-relaxed text-slate-900 antialiased;
   }
   button,
   a,
   input,
   select,
   textarea {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-600 focus-visible:ring-offset-2;
+    @apply focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy-600 focus-visible:ring-offset-2;
   }
 }
 

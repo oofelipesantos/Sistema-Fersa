@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { AuthProvider } from "@/features/auth/auth-context";
 
 function PwaRegistration() {
   useEffect(() => {
@@ -20,8 +21,10 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
   );
   return (
     <QueryClientProvider client={client}>
-      <PwaRegistration />
-      {children}
+      <AuthProvider>
+        <PwaRegistration />
+        {children}
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

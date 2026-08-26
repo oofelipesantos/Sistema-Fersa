@@ -9,6 +9,7 @@ Fersa Support is a multilingual, mobile-first after-sales technical support PWA.
 - Mobile support journey: QR scanner (BarcodeDetector first, ZXing fallback), Part Number lookup, localized product content, guided diagnosis, self-service resolution, support-ticket wizard and ticket follow-up.
 - Desktop service desk: operational metrics, language distribution, searchable ticket table and internal ticket view.
 - Repository contracts with centralized mock/Supabase implementation selection. Mock is enabled by default and includes multilingual products, issues, tickets and routing.
+- Self-registration, persistent browser session, account recovery, company verification and user/company ticket isolation in both mock and Supabase modes.
 - Supabase schema, database translations, Auth integration boundary, Realtime publication, RLS policies and Storage buckets.
 - Installable PWA metadata, icons and an offline app-shell service worker.
 
@@ -22,6 +23,15 @@ npm run dev
 
 Open the locale URL such as `http://localhost:3000/pt-BR`. In demonstration mode, no Supabase project is needed.
 
+### Demo accounts
+
+| Access          | Email              | Password    |
+| --------------- | ------------------ | ----------- |
+| Customer portal | `demo@fersa.test`  | `Demo123!`  |
+| Internal admin  | `admin@fersa.test` | `Admin123!` |
+
+New mock accounts, sessions, company review actions and tickets are saved in the browser's `localStorage`. Demo passwords exist only inside the browser mock; Supabase mode uses Supabase Auth.
+
 ## Environment
 
 | Variable                        | Purpose                                                                                                     |
@@ -33,7 +43,7 @@ Open the locale URL such as `http://localhost:3000/pt-BR`. In demonstration mode
 
 ## Supabase setup
 
-Apply `supabase/migrations/202608250001_initial_schema.sql`, then `supabase/rls.sql`. Details are in [supabase/README.md](supabase/README.md). The schema stores display content in translation tables and stores only stable enum values for statuses/priorities.
+Apply the migrations in timestamp order and then the RLS policies as described in [supabase/README.md](supabase/README.md). The incremental registration migrations create the user's profile and company from Auth metadata, add verification fields and enforce ticket/company isolation.
 
 Storage buckets created by the migration:
 
@@ -64,10 +74,11 @@ supabase/              migrations and RLS policies
 ```bash
 npm run lint
 npm run typecheck
+npm test
 npm run build
 npm run format:check
 ```
 
 ## Production notes
 
-Deploy to Vercel as a standard Next.js project. Configure the environment variables in Vercel; connect a custom subdomain there rather than embedding it in code. For sensitive admin writes and attachment signing, keep service-role operations in server-only routes, actions or Edge Functions. RLS is the authorization boundary; frontend role-specific navigation is only a user-experience layer.
+Deploy to Vercel as a standard Next.js project. Configure the environment variables in Vercel; connect a custom subdomain there rather than embedding it in code. Never add a service-role key to a `NEXT_PUBLIC_*` variable. RLS is the authorization boundary; frontend route guards are only a user-experience layer.

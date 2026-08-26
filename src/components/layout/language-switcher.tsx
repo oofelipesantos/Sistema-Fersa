@@ -4,9 +4,6 @@ import { Languages } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { type Locale, locales } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
-
-const labels = { "pt-BR": "portuguese", es: "spanish", en: "english" } as const;
 
 export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const locale = useLocale() as Locale;
@@ -14,26 +11,27 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const router = useRouter();
   const t = useTranslations("common");
   return (
-    <div className="flex items-center gap-1" aria-label={t("language")}>
+    <div className="flex items-center gap-1">
       {!compact && (
-        <Languages className="mr-1 h-4 w-4 text-slate-500" aria-hidden />
+        <Languages
+          className="hidden h-5 w-5 text-slate-500 sm:block"
+          aria-hidden
+        />
       )}
-      {locales.map((option) => (
-        <button
-          aria-label={t(labels[option])}
-          className={cn(
-            "rounded-md px-2 py-1 text-xs font-semibold",
-            option === locale
-              ? "bg-navy-700 text-white"
-              : "text-slate-600 hover:bg-steel-100"
-          )}
-          key={option}
-          onClick={() => router.replace(pathname, { locale: option })}
-          type="button"
-        >
-          {option === "pt-BR" ? "PT" : option.toUpperCase()}
-        </button>
-      ))}
+      <select
+        aria-label={t("language")}
+        className="h-12 w-20 rounded-lg border bg-white px-2 text-base font-bold text-slate-700"
+        onChange={(event) =>
+          router.replace(pathname, { locale: event.target.value as Locale })
+        }
+        value={locale}
+      >
+        {locales.map((option) => (
+          <option key={option} value={option}>
+            {option === "pt-BR" ? "PT" : option.toUpperCase()}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

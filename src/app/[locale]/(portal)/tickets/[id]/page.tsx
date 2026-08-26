@@ -1,6 +1,5 @@
-import { notFound } from "next/navigation";
-import { TicketDetail } from "@/components/tickets/ticket-detail";
-import { getTicketRepository } from "@/repositories/repository-factory";
+import { ProtectedTicketDetail } from "@/components/tickets/protected-ticket-pages";
+import { ProtectedRoute } from "@/features/auth/protected-route";
 import type { Locale } from "@/types/domain";
 
 export default async function TicketPage({
@@ -9,7 +8,9 @@ export default async function TicketPage({
   params: Promise<{ id: string; locale: Locale }>;
 }) {
   const { id, locale } = await params;
-  const ticket = await getTicketRepository().findById(id);
-  if (!ticket) notFound();
-  return <TicketDetail locale={locale} ticket={ticket} />;
+  return (
+    <ProtectedRoute>
+      <ProtectedTicketDetail id={id} locale={locale} />
+    </ProtectedRoute>
+  );
 }

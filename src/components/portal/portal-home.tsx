@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BookOpen,
   ChevronRight,
@@ -6,23 +8,30 @@ import {
   Search,
   Ticket as TicketIcon
 } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/tickets/ticket-badges";
 import { PartNumberFinder } from "./part-number-finder";
 import { Link } from "@/i18n/navigation";
+import { useAuth } from "@/features/auth/auth-context";
+import { getTicketRepository } from "@/repositories/repository-factory";
 import type { Locale, Ticket } from "@/types/domain";
 
-export async function PortalHome({
-  locale,
-  tickets
-}: {
-  locale: Locale;
-  tickets: Ticket[];
-}) {
-  const t = await getTranslations("portal");
-  const nav = await getTranslations("nav");
-  const ticketT = await getTranslations("ticket");
+export function PortalHome({ locale }: { locale: Locale }) {
+  const t = useTranslations("portal");
+  const nav = useTranslations("nav");
+  const ticketT = useTranslations("ticket");
+  const { session } = useAuth();
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  useEffect(() => {
+    if (!session) return;
+    getTicketRepository()
+      .list()
+      .then(setTickets)
+      .catch(() => setTickets([]));
+  }, [session]);
+  const visibleTickets = session ? tickets : [];
   const actions = [
     {
       href: "/scan",
@@ -31,7 +40,7 @@ export async function PortalHome({
       icon: ScanLine
     },
     {
-      href: "/tickets/new",
+      href: "/scan",
       title: t("partTitle"),
       description: t("partDescription"),
       icon: Search
@@ -59,12 +68,22 @@ export async function PortalHome({
     <div className="space-y-6">
       <section>
         <p className="text-sm font-semibold text-navy-700">
-          {t("greeting", { name: "Mariana" })}
+          {session
+            ? t("greeting", { name: session.user.fullName.split(" ")[0] })
+            : t("welcome")}
         </p>
         <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
           {t("question")}
         </h1>
-        <p className="mt-2 text-sm text-slate-500">{t("roleNotice")}</p>
+        <p className="mt-2 text-base text-slate-600">
+          {session?.organization?.verificationStatus === "PENDING"
+            ? t("pendingVerification")
+            : session
+              ? t("signedInNotice", {
+                  organization: session.organization?.name ?? ""
+                })
+              : t("publicNotice")}
+        </p>
       </section>
       <section className="grid gap-3 sm:grid-cols-2">
         <Link
@@ -82,37 +101,42 @@ export async function PortalHome({
           />
         </Card>
       </section>
-      <section>
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-bold">{t("recentTickets")}</h2>
-          <Link className="text-sm font-semibold text-navy-700" href="/tickets">
-            {nav("myTickets")}
-          </Link>
-        </div>
-        <div className="space-y-3">
-          {tickets.slice(0, 2).map((ticket) => (
+      {session && (
+        <section>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-lg font-bold">{t("recentTickets")}</h2>
             <Link
-              className="block"
-              href={`/tickets/${ticket.id}`}
-              key={ticket.id}
+              className="text-sm font-semibold text-navy-700"
+              href="/tickets"
             >
-              <Card className="transition hover:border-navy-600">
-                <CardContent className="flex items-center justify-between gap-3 p-4">
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold">
-                      {ticketT("number", { number: ticket.number })}
-                    </p>
-                    <p className="mt-1 truncate text-sm text-slate-600">
-                      {ticket.productPartNumber} · {ticket.issueTitle[locale]}
-                    </p>
-                  </div>
-                  <StatusBadge status={ticket.status} />
-                </CardContent>
-              </Card>
+              {nav("myTickets")}
             </Link>
-          ))}
-        </div>
-      </section>
+          </div>
+          <div className="space-y-3">
+            {visibleTickets.slice(0, 2).map((ticket) => (
+              <Link
+                className="block"
+                href={`/tickets/${ticket.id}`}
+                key={ticket.id}
+              >
+                <Card className="transition hover:border-navy-600">
+                  <CardContent className="flex items-center justify-between gap-3 p-4">
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold">
+                        {ticketT("number", { number: ticket.number })}
+                      </p>
+                      <p className="mt-1 truncate text-sm text-slate-600">
+                        {ticket.productPartNumber} · {ticket.issueTitle[locale]}
+                      </p>
+                    </div>
+                    <StatusBadge status={ticket.status} />
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
       <section className="grid gap-3 sm:grid-cols-2">
         {actions.slice(1).map(({ href, title, description, icon: Icon }) => (
           <Link

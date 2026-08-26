@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Clock3,
   MapPin,
@@ -5,12 +7,12 @@ import {
   Paperclip,
   UserRound
 } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PriorityBadge, StatusBadge } from "./ticket-badges";
 import type { Locale, Ticket } from "@/types/domain";
 
-export async function TicketDetail({
+export function TicketDetail({
   ticket,
   locale,
   internal = false
@@ -19,8 +21,8 @@ export async function TicketDetail({
   locale: Locale;
   internal?: boolean;
 }) {
-  const t = await getTranslations("ticket");
-  const common = await getTranslations("common");
+  const t = useTranslations("ticket");
+  const common = useTranslations("common");
   const format = new Intl.DateTimeFormat(locale, {
     dateStyle: "short",
     timeStyle: "short"
@@ -60,11 +62,11 @@ export async function TicketDetail({
               <Detail label={t("product")} value={ticket.productPartNumber} />
               <Detail
                 label={t("equipment")}
-                value={ticket.equipment ?? common("notAvailable")}
+                value={ticket.equipment || common("notAvailable")}
               />
               <Detail
                 label={t("serialNumber")}
-                value={ticket.serialNumber ?? common("notAvailable")}
+                value={ticket.serialNumber || common("notAvailable")}
               />
               <Detail label={t("locale")} value={ticket.locale.toUpperCase()} />
             </div>
@@ -98,7 +100,9 @@ export async function TicketDetail({
                 />
                 <div>
                   <p className="text-sm font-semibold">
-                    {t(`history_${item.action}`)}
+                    {t.has(`history_${item.action}`)
+                      ? t(`history_${item.action}`)
+                      : item.action}
                   </p>
                   <p className="text-xs text-slate-500">
                     {format.format(new Date(item.createdAt))}
@@ -141,7 +145,28 @@ export async function TicketDetail({
             </h2>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-500">{common("notAvailable")}</p>
+            {ticket.attachments.length === 0 ? (
+              <p className="text-sm text-slate-500">{common("notAvailable")}</p>
+            ) : (
+              <ul className="space-y-2">
+                {ticket.attachments.map((attachment) => (
+                  <li
+                    className="rounded-lg bg-steel-50 p-3 text-sm"
+                    key={attachment.id}
+                  >
+                    <p className="font-semibold">{attachment.fileName}</p>
+                    <p className="mt-1 text-xs text-slate-500">
+                      {t("fileSize", {
+                        value: Math.max(
+                          1,
+                          Math.round(attachment.sizeBytes / 1024)
+                        )
+                      })}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
           </CardContent>
         </Card>
       </div>

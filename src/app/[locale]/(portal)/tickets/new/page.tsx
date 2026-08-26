@@ -1,4 +1,5 @@
 import { TicketWizard } from "@/components/tickets/ticket-wizard";
+import { ProtectedRoute } from "@/features/auth/protected-route";
 import {
   getKnowledgeBaseRepository,
   getProductRepository
@@ -16,6 +17,12 @@ export default async function NewTicketPage({
     getKnowledgeBaseRepository().listCategories()
   ]);
   return (
-    <TicketWizard categories={categories} locale={locale} products={products} />
+    <ProtectedRoute>
+      <TicketWizard
+        categories={categories}
+        locale={locale}
+        products={products}
+      />
+    </ProtectedRoute>
   );
 }
