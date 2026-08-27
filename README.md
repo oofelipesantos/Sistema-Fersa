@@ -1,19 +1,156 @@
 # Fersa Support
 
-Fersa Support is a multilingual, mobile-first after-sales technical support PWA. It contains a field portal for distributors and mechanics and a desktop service desk for support, technicians, and administrators.
+### Atendimento técnico simples, seguro e escalável
 
-## Included
+[Acessar demonstração](https://sistema-fersa.vercel.app/pt-BR) · [Baixar apresentação institucional](docs/Fersa-Support-Apresentacao-Institucional.pptx)
 
-- Next.js App Router, TypeScript, Tailwind CSS, shadcn-style components, Lucide, React Hook Form, Zod and TanStack Query.
-- `next-intl` localization in Brazilian Portuguese (`pt-BR`), Spanish (`es`) and English (`en`), including browser locale detection, switcher and locale-aware dates.
-- Mobile support journey: QR scanner (BarcodeDetector first, ZXing fallback), Part Number lookup, localized product content, guided diagnosis, self-service resolution, support-ticket wizard and ticket follow-up.
-- Desktop service desk: operational metrics, language distribution, searchable ticket table and internal ticket view.
-- Repository contracts with centralized mock/Supabase implementation selection. Mock is enabled by default and includes multilingual products, issues, tickets and routing.
-- Self-registration, persistent browser session, account recovery, company verification and user/company ticket isolation in both mock and Supabase modes.
-- Supabase schema, database translations, Auth integration boundary, Realtime publication, RLS policies and Storage buckets.
-- Installable PWA metadata, icons and an offline app-shell service worker.
+> [!IMPORTANT]
+> Projeto demonstrativo e não oficial, desenvolvido como proposta de inovação para o pós-venda técnico. Marcas, produtos e fluxos apresentados servem exclusivamente para contextualizar o protótipo.
 
-## Run locally
+![Tela inicial do Fersa Support](docs/assets/fersa-home.png)
+
+O **Fersa Support** é uma PWA multilíngue e mobile-first que conecta clientes, distribuidores, oficinas e a equipe técnica em uma única jornada. A plataforma reúne identificação de produtos, conteúdo técnico, diagnóstico guiado, abertura de chamados e acompanhamento do atendimento.
+
+## Problema identificado
+
+O desafio não está apenas em resolver um problema técnico. Antes disso, o cliente precisa localizar o produto correto, encontrar informação confiável, explicar o contexto e chegar ao canal adequado.
+
+Os principais pontos de atrito considerados no projeto foram:
+
+- identificação incompleta do produto, Part Number ou aplicação;
+- conteúdo técnico, diagnóstico e chamados distribuídos em etapas desconectadas;
+- baixa visibilidade do histórico e do status do atendimento;
+- diferentes idiomas e níveis de familiaridade digital;
+- dados insuficientes, que podem gerar retrabalho na triagem.
+
+## Solução proposta
+
+A proposta cria uma porta de entrada digital única para o pós-venda técnico:
+
+- consulta pública por QR Code ou Part Number;
+- catálogo, manuais e conteúdo técnico sem exigir login;
+- diagnóstico guiado antes da abertura do chamado;
+- cadastro progressivo, com rascunho preservado no navegador;
+- abertura e acompanhamento de chamados para usuários autenticados;
+- relacionamento entre usuário, empresa, produto e atendimento;
+- área interna para consultar, priorizar e administrar empresas;
+- interface sincronizada em português, espanhol e inglês.
+
+<p align="center">
+  <img src="docs/assets/fersa-cadastro-mobile.png" alt="Cadastro mobile em etapas" width="260" />
+</p>
+
+## Jornada do usuário
+
+```mermaid
+flowchart LR
+    A[Identificar produto] --> B[Consultar conteúdo]
+    B --> C[Executar diagnóstico]
+    C --> D{Problema resolvido?}
+    D -- Sim --> E[Encerrar jornada]
+    D -- Não --> F[Entrar ou cadastrar]
+    F --> G[Abrir chamado com contexto]
+    G --> H[Acompanhar atendimento]
+```
+
+O conteúdo técnico permanece público, enquanto chamados, anexos, histórico e dados da empresa exigem uma sessão válida.
+
+![Página de produto com conteúdo público e ações protegidas](docs/assets/fersa-produto.png)
+
+## Resultados esperados
+
+Os ganhos de negócio são hipóteses a serem validadas em um piloto controlado:
+
+- mais autonomia para consultas simples;
+- chamados com contexto técnico mais completo;
+- menor retrabalho antes da análise técnica;
+- mais visibilidade do histórico do cliente;
+- melhor experiência de uso em campo e no desktop.
+
+Sem uma linha de base operacional, o projeto não promete percentuais. O piloto deve medir tempo de abertura, completude dos dados, casos resolvidos sem chamado e satisfação percebida.
+
+## Metodologia
+
+O desenvolvimento foi conduzido em quatro etapas:
+
+1. **Descoberta:** levantamento de públicos, rotas, requisitos e riscos.
+2. **Arquitetura:** separação do domínio, repositories e políticas de acesso.
+3. **Implementação:** fluxos curtos, internacionalização, modo demonstrativo e integração Supabase.
+4. **Validação:** testes automatizados, análise estática, build e navegação em produção.
+
+Cada decisão foi validada em camadas: schema → repository → interface → build → produção.
+
+## Arquitetura
+
+```mermaid
+flowchart TB
+    subgraph Interfaces
+        P[Público<br/>produtos, manuais e diagnóstico]
+        A[Autenticado<br/>cadastro, chamados e histórico]
+        I[Equipe interna<br/>empresas, usuários e atendimento]
+    end
+
+    P --> S[Serviços e regras de negócio]
+    A --> S
+    I --> S
+    S --> R[Contratos de repository]
+    R --> M[Mock<br/>demonstração local]
+    R --> DB[Supabase<br/>operação persistente]
+```
+
+```text
+src/
+  app/           rotas e grupos de rotas
+  components/    interface e composição visual
+  features/      schemas e serviços por funcionalidade
+  repositories/  contratos, implementações mock e Supabase
+  services/      autenticação e roteamento de chamados
+  i18n/          configuração de idiomas e rotas
+  lib/           ambiente e clientes Supabase
+  types/         tipos de domínio
+messages/        traduções pt-BR, es e en
+supabase/        migrations, RLS e Storage
+```
+
+## Segurança e privacidade
+
+- Supabase Auth ou sessão demonstrativa com credenciais exatas;
+- Row Level Security para isolar empresas, usuários e chamados;
+- regras de Storage para validar organização, chamado e usuário;
+- rejeição de URLs externas nos retornos de autenticação;
+- proteção adicional para organizações internas;
+- nenhuma chave `service_role` exposta no navegador.
+
+Os controles de interface orientam a navegação, mas as políticas RLS são a fronteira real de autorização no modo Supabase.
+
+## Tecnologias
+
+- Next.js 16, React 19 e TypeScript;
+- Tailwind CSS e componentes no padrão shadcn/ui;
+- React Hook Form e Zod;
+- TanStack Query;
+- `next-intl` para português, espanhol e inglês;
+- Supabase Auth, Database, Realtime e Storage;
+- BarcodeDetector com fallback ZXing;
+- Vitest, ESLint e Prettier;
+- deploy na Vercel e recursos de PWA.
+
+## Evidências da entrega
+
+Na validação desta versão:
+
+- **35 testes automatizados aprovados**;
+- **3 idiomas** com chaves sincronizadas;
+- **0 vulnerabilidades** reportadas pelo `npm audit`;
+- build de produção aprovado;
+- fluxos mobile e desktop revisados;
+- aplicação publicada e navegável na Vercel.
+
+![Diagnóstico guiado na base de conhecimento](docs/assets/fersa-base-conhecimento.png)
+
+## Executar localmente
+
+Requisitos: Node.js 20 ou superior e npm.
 
 ```bash
 npm install
@@ -21,55 +158,29 @@ copy .env.example .env.local
 npm run dev
 ```
 
-Open the locale URL such as `http://localhost:3000/pt-BR`. In demonstration mode, no Supabase project is needed.
+Acesse `http://localhost:3000/pt-BR`. No modo demonstrativo, nenhum projeto Supabase é necessário.
 
-### Demo accounts
+### Contas de demonstração
 
-| Access          | Email              | Password    |
-| --------------- | ------------------ | ----------- |
-| Customer portal | `demo@fersa.test`  | `Demo123!`  |
-| Internal admin  | `admin@fersa.test` | `Admin123!` |
+| Perfil                | E-mail             | Senha       |
+| --------------------- | ------------------ | ----------- |
+| Portal do cliente     | `demo@fersa.test`  | `Demo123!`  |
+| Administração interna | `admin@fersa.test` | `Admin123!` |
 
-New mock accounts, sessions, company review actions and tickets are saved in the browser's `localStorage`. Demo passwords exist only inside the browser mock; Supabase mode uses Supabase Auth.
+Novas contas, sessões, ações de revisão e chamados do modo mock são gravados no `localStorage`. As credenciais acima existem somente nessa simulação; o modo Supabase utiliza o Supabase Auth.
 
-## Environment
+## Variáveis de ambiente
 
-| Variable                        | Purpose                                                                                                     |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_USE_MOCK_DATA`     | `true` (default) uses local multilingual demo repositories. Set to `false` to select Supabase repositories. |
-| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase project URL, required when mock mode is disabled.                                                  |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase browser anon key, required when mock mode is disabled.                                             |
-| `NEXT_PUBLIC_APP_URL`           | Optional canonical deployment URL for auth recovery redirects. No domain is hardcoded.                      |
+| Variável                        | Finalidade                                                       |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `NEXT_PUBLIC_USE_MOCK_DATA`     | `true` usa os repositories locais; `false` seleciona o Supabase. |
+| `NEXT_PUBLIC_SUPABASE_URL`      | URL do projeto Supabase, obrigatória fora do modo mock.          |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave pública `anon`, obrigatória fora do modo mock.             |
+| `NEXT_PUBLIC_APP_URL`           | URL canônica opcional para retornos de recuperação de conta.     |
 
-## Supabase setup
+As migrations devem ser aplicadas em ordem cronológica, conforme [a documentação do Supabase](supabase/README.md).
 
-Apply the migrations in timestamp order and then the RLS policies as described in [supabase/README.md](supabase/README.md). The incremental registration migrations create the user's profile and company from Auth metadata, add verification fields and enforce ticket/company isolation.
-
-Storage buckets created by the migration:
-
-- `avatars/{profileId}/...`
-- `product-images/...`
-- `manuals/{productId}/{locale}/...`
-- `ticket-attachments/{organizationId}/{ticketId}/...`
-- `technical-visits/{visitId}/...`
-
-## Architecture
-
-```text
-src/
-  app/                 routes and route groups
-  components/          shadcn-style UI and composition components
-  features/            form schema and feature services
-  repositories/        contracts, mock and Supabase implementations
-  services/            ticket routing, auth and future translation boundary
-  i18n/                routing and request configuration
-  lib/                 environment and Supabase helpers
-  types/               domain types
-messages/              pt-BR, es and en UI messages
-supabase/              migrations and RLS policies
-```
-
-## Commands
+## Qualidade
 
 ```bash
 npm run lint
@@ -77,8 +188,22 @@ npm run typecheck
 npm test
 npm run build
 npm run format:check
+npm audit
 ```
 
-## Production notes
+## Próximos passos
 
-Deploy to Vercel as a standard Next.js project. Configure the environment variables in Vercel; connect a custom subdomain there rather than embedding it in code. Never add a service-role key to a `NEXT_PUBLIC_*` variable. RLS is the authorization boundary; frontend route guards are only a user-experience layer.
+1. Homologar conteúdo e fluxos com usuários piloto.
+2. Conectar o ambiente Supabase e definir responsáveis operacionais.
+3. Medir a jornada com uma linha de base acordada.
+4. Priorizar integrações e ampliar o catálogo com base nas evidências.
+
+## Apresentação
+
+A apresentação institucional reúne o problema, os objetivos, a solução, a metodologia, as evidências técnicas, os resultados esperados e uma proposta de piloto em 15 slides:
+
+**[Baixar Fersa Support — Apresentação Institucional](docs/Fersa-Support-Apresentacao-Institucional.pptx)**
+
+---
+
+**Demonstração:** [sistema-fersa.vercel.app/pt-BR](https://sistema-fersa.vercel.app/pt-BR)
