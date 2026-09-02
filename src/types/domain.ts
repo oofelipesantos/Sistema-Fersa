@@ -115,10 +115,42 @@ export interface Ticket {
   equipment?: string;
   serialNumber?: string;
   location?: string;
+  visitScheduledAt?: string;
+  resolutionSummary?: string;
   messages: TicketMessage[];
   history: TicketHistoryItem[];
   attachments: TicketAttachment[];
 }
+
+export type TechnicianAvailability = "AVAILABLE" | "BUSY" | "OFFLINE";
+
+export interface TechnicianSummary {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  preferredLocale: Locale;
+  region: string;
+  specialties: string[];
+  availability: TechnicianAvailability;
+  activeTicketCount: number;
+  resolvedTicketCount: number;
+}
+
+export type TicketWorkflowAction =
+  | { type: "TAKE" }
+  | { type: "REPLY"; message: string; visibility: MessageVisibility }
+  | { type: "REQUEST_INFORMATION"; message: string }
+  | { type: "ASSIGN_TECHNICIAN"; technicianId: string; note?: string }
+  | { type: "MARK_VISIT_REQUIRED"; note: string }
+  | {
+      type: "SCHEDULE_VISIT";
+      scheduledAt: string;
+      technicianId?: string;
+      note?: string;
+    }
+  | { type: "RESOLVE"; resolution: string }
+  | { type: "REOPEN"; reason: string };
 
 export interface TicketAttachment {
   id: string;

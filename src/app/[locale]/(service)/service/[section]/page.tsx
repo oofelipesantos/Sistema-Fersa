@@ -1,5 +1,12 @@
 import { notFound } from "next/navigation";
-import { ServiceEmptyPage } from "@/components/service/service-empty-page";
+import {
+  MyWorkPage,
+  ProductsPage,
+  ReportsPage,
+  SettingsPage,
+  TechniciansPage,
+  VisitsPage
+} from "@/components/service/service-section-pages";
 
 const sections = [
   "my-work",
@@ -10,15 +17,6 @@ const sections = [
   "reports",
   "settings"
 ] as const;
-const keys = {
-  "my-work": "myWork",
-  visits: "visits",
-  customers: "customers",
-  products: "products",
-  technicians: "technicians",
-  reports: "reports",
-  settings: "settings"
-} as const;
 export default async function ServiceSectionPage({
   params
 }: {
@@ -26,5 +24,20 @@ export default async function ServiceSectionPage({
 }) {
   const { section } = await params;
   if (!sections.includes(section as (typeof sections)[number])) notFound();
-  return <ServiceEmptyPage titleKey={keys[section as keyof typeof keys]} />;
+  switch (section) {
+    case "my-work":
+      return <MyWorkPage />;
+    case "visits":
+      return <VisitsPage />;
+    case "products":
+      return <ProductsPage />;
+    case "technicians":
+      return <TechniciansPage />;
+    case "reports":
+      return <ReportsPage />;
+    case "settings":
+      return <SettingsPage />;
+    case "customers":
+      notFound();
+  }
 }

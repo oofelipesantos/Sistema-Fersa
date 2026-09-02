@@ -5,7 +5,9 @@ import type {
   KnownIssue,
   OrganizationWithUsers,
   Product,
+  TechnicianSummary,
   Ticket,
+  TicketWorkflowAction,
   VerificationStatus
 } from "@/types/domain";
 
@@ -25,6 +27,11 @@ export interface TicketRepository {
   findById(id: string): Promise<Ticket | null>;
   create(input: CreateTicketInput): Promise<Ticket>;
   addAttachments(ticketId: string, files: File[]): Promise<void>;
+  listTechnicians(): Promise<TechnicianSummary[]>;
+  applyWorkflow(
+    ticketId: string,
+    action: TicketWorkflowAction
+  ): Promise<Ticket>;
   getDashboardMetrics(): Promise<DashboardMetrics>;
 }
 

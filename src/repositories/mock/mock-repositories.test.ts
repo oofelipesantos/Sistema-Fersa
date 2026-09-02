@@ -70,7 +70,7 @@ describe("mock authentication and repositories", () => {
     const auth = new AuthService();
     await auth.signIn("demo@fersa.test", "Demo123!");
     const created = await new MockTicketRepository().create({
-      productId: "product-f15123",
+      productId: "product-f400009",
       categoryId: "noise",
       description: "Ruído contínuo depois da instalação do rolamento.",
       quantity: 1,
@@ -103,7 +103,7 @@ describe("mock authentication and repositories", () => {
     expect(session?.organization?.verificationStatus).toBe("PENDING");
     await expect(
       new MockTicketRepository().create({
-        productId: "product-f15123",
+        productId: "product-f400009",
         categoryId: "vibration",
         description: "Vibração percebida durante o teste de rodagem.",
         locale: "pt-BR",
@@ -132,5 +132,42 @@ describe("mock authentication and repositories", () => {
         "BLOCKED"
       )
     ).rejects.toThrow("PROTECTED_INTERNAL_ORGANIZATION");
+  });
+
+  it("persists support escalation, technician access and resolution", async () => {
+    const auth = new AuthService();
+    const repository = new MockTicketRepository();
+    await auth.signIn("support@fersa.test", "Support123!");
+    await repository.applyWorkflow("ticket-145", {
+      type: "ASSIGN_TECHNICIAN",
+      technicianId: "technician-rafael",
+      note: "Encaminhado para análise de montagem e sinal do ABS."
+    });
+    await auth.signOut();
+
+    await auth.signIn("rafael@fersa.test", "Tech123!");
+    const assigned = await repository.findById("ticket-145");
+    expect(assigned).toMatchObject({
+      status: "TECHNICIAN_ASSIGNED",
+      assigneeName: "Rafael Mendes"
+    });
+    const resolved = await repository.applyWorkflow("ticket-145", {
+      type: "RESOLVE",
+      resolution:
+        "Conector do sensor ABS reposicionado e torque conferido. Teste aprovado."
+    });
+    expect(resolved.status).toBe("RESOLVED");
+    expect(resolved.resolutionSummary).toContain("sensor ABS");
+    expect(resolved.history.at(-1)?.action).toBe("TICKET_RESOLVED");
+  });
+
+  it("lists technician capacity from the current queue", async () => {
+    const auth = new AuthService();
+    await auth.signIn("admin@fersa.test", "Admin123!");
+    const technicians = await new MockTicketRepository().listTechnicians();
+    expect(technicians).toHaveLength(3);
+    expect(
+      technicians.find((item) => item.fullName === "Rafael Mendes")
+    ).toMatchObject({ activeTicketCount: 1, resolvedTicketCount: 1 });
   });
 });

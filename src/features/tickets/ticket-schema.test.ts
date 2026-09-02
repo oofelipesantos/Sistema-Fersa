@@ -18,7 +18,7 @@ describe("positiveIntegerField", () => {
 
 describe("ticketSchema", () => {
   const validTicket = {
-    productId: "product-f15123",
+    productId: "product-f400009",
     categoryId: "vibration",
     description: "The bearing vibrates after the vehicle starts moving.",
     equipment: "Truck",

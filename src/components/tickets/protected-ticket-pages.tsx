@@ -91,7 +91,14 @@ export function ProtectedTicketDetail({
   }, [id]);
   if (ticket === undefined) return <Loading />;
   if (!ticket) return <Message>{t("notFound")}</Message>;
-  return <TicketDetail internal={internal} locale={locale} ticket={ticket} />;
+  return (
+    <TicketDetail
+      internal={internal}
+      locale={locale}
+      onChange={setTicket}
+      ticket={ticket}
+    />
+  );
 }
 
 function Loading() {

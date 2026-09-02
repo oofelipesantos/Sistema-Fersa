@@ -4,9 +4,11 @@ import type {
   CreateTicketInput,
   DashboardMetrics,
   Locale,
+  TechnicianSummary,
   Ticket,
   TicketPriority,
-  TicketStatus
+  TicketStatus,
+  TicketWorkflowAction
 } from "@/types/domain";
 
 type TranslationRow = { locale: Locale; name: string };
@@ -44,6 +46,7 @@ type TicketRow = {
     author: ProfileRow;
   }[];
   ticket_history: { id: string; action: string; created_at: string }[];
+  technical_visits: { scheduled_at: string | null; status: string }[];
   ticket_attachments: {
     id: string;
     file_name: string;
@@ -64,6 +67,7 @@ const ticketSelect = `
   issue_categories(issue_category_translations(locale, name)),
   ticket_messages(id, body, visibility, created_at, author:profiles!ticket_messages_author_id_fkey(full_name)),
   ticket_history(id, action, created_at),
+  technical_visits(scheduled_at, status),
   ticket_attachments(id, file_name, content_type, size_bytes, storage_path, created_at)
 `;
 const supportedLocales: Locale[] = ["pt-BR", "es", "en"];
@@ -131,6 +135,167 @@ export class SupabaseTicketRepository implements TicketRepository {
         percentage: Math.round((byLocale(locale) / total) * 100)
       }))
     };
+  }
+
+  async listTechnicians(): Promise<TechnicianSummary[]> {
+    const [{ data, error }, tickets] = await Promise.all([
+      this.client
+        .from("profiles")
+        .select(
+          "id, full_name, email, phone, preferred_locale, branches(name, country)"
+        )
+        .eq("role", "TECHNICIAN")
+        .eq("active", true)
+        .order("full_name"),
+      this.list()
+    ]);
+    if (error) throw error;
+    type TechnicianRow = {
+      id: string;
+      full_name: string;
+      email: string | null;
+      phone: string | null;
+      preferred_locale: Locale;
+      branches: { name: string; country: string } | null;
+    };
+    return ((data ?? []) as unknown as TechnicianRow[]).map((technician) => ({
+      id: technician.id,
+      fullName: technician.full_name,
+      email: technician.email ?? "",
+      phone: technician.phone ?? "",
+      preferredLocale: technician.preferred_locale,
+      region:
+        [technician.branches?.name, technician.branches?.country]
+          .filter(Boolean)
+          .join(" · ") || "Fersa",
+      specialties: ["Wheel End", "Análise técnica"],
+      availability: "AVAILABLE",
+      activeTicketCount: tickets.filter(
+        (ticket) =>
+          ticket.assigneeName === technician.full_name &&
+          !["RESOLVED", "CANCELLED"].includes(ticket.status)
+      ).length,
+      resolvedTicketCount: tickets.filter(
+        (ticket) =>
+          ticket.assigneeName === technician.full_name &&
+          ticket.status === "RESOLVED"
+      ).length
+    }));
+  }
+
+  async applyWorkflow(ticketId: string, action: TicketWorkflowAction) {
+    const {
+      data: { user },
+      error: userError
+    } = await this.client.auth.getUser();
+    if (userError) throw userError;
+    if (!user) throw new Error("AUTHENTICATION_REQUIRED");
+
+    const now = new Date().toISOString();
+    const update: Record<string, string | null> = {};
+    let historyAction = "MESSAGE_SENT";
+    let body: string | undefined;
+    let visibility: "CUSTOMER" | "INTERNAL" = "CUSTOMER";
+
+    switch (action.type) {
+      case "TAKE":
+        update.status = "IN_PROGRESS";
+        update.assigned_to = user.id;
+        historyAction = "SUPPORT_ASSIGNED";
+        break;
+      case "REPLY":
+        body = action.message.trim();
+        visibility = action.visibility;
+        break;
+      case "REQUEST_INFORMATION":
+        update.status = "WAITING_CUSTOMER";
+        update.assigned_to = user.id;
+        body = action.message.trim();
+        historyAction = "CUSTOMER_INFORMATION_REQUESTED";
+        break;
+      case "ASSIGN_TECHNICIAN":
+        update.status = "TECHNICIAN_ASSIGNED";
+        update.assigned_to = action.technicianId;
+        body =
+          action.note?.trim() ||
+          "Solicitação encaminhada para análise técnica especializada.";
+        historyAction = "TECHNICIAN_ASSIGNED";
+        break;
+      case "MARK_VISIT_REQUIRED":
+        update.status = "VISIT_REQUIRED";
+        body = action.note.trim();
+        historyAction = "VISIT_REQUIRED";
+        break;
+      case "SCHEDULE_VISIT":
+        update.status = "VISIT_SCHEDULED";
+        if (action.technicianId) update.assigned_to = action.technicianId;
+        body = action.note?.trim() || "Visita técnica agendada.";
+        historyAction = "VISIT_SCHEDULED";
+        break;
+      case "RESOLVE":
+        update.status = "RESOLVED";
+        update.resolved_at = now;
+        body = action.resolution.trim();
+        historyAction = "TICKET_RESOLVED";
+        break;
+      case "REOPEN":
+        update.status = "IN_PROGRESS";
+        update.resolved_at = null;
+        body = action.reason.trim();
+        historyAction = "TICKET_REOPENED";
+        break;
+    }
+
+    if (
+      [
+        "REPLY",
+        "REQUEST_INFORMATION",
+        "MARK_VISIT_REQUIRED",
+        "RESOLVE",
+        "REOPEN"
+      ].includes(action.type) &&
+      !body
+    )
+      throw new Error("MESSAGE_REQUIRED");
+
+    if (Object.keys(update).length > 0) {
+      const { error } = await this.client
+        .from("tickets")
+        .update(update)
+        .eq("id", ticketId);
+      if (error) throw error;
+    }
+    if (action.type === "SCHEDULE_VISIT") {
+      const { error } = await this.client.from("technical_visits").insert({
+        ticket_id: ticketId,
+        technician_id: action.technicianId ?? user.id,
+        scheduled_at: action.scheduledAt,
+        notes: action.note,
+        status: "SCHEDULED"
+      });
+      if (error) throw error;
+    }
+    if (body) {
+      const { error } = await this.client.from("ticket_messages").insert({
+        ticket_id: ticketId,
+        author_id: user.id,
+        body,
+        visibility,
+        locale: "pt-BR"
+      });
+      if (error) throw error;
+    }
+    const { error: historyError } = await this.client
+      .from("ticket_history")
+      .insert({
+        ticket_id: ticketId,
+        actor_id: user.id,
+        action: historyAction
+      });
+    if (historyError) throw historyError;
+    const ticket = await this.findById(ticketId);
+    if (!ticket) throw new Error("TICKET_NOT_FOUND_AFTER_UPDATE");
+    return ticket;
   }
 
   async create(input: CreateTicketInput): Promise<Ticket> {
@@ -240,15 +405,18 @@ export class SupabaseTicketRepository implements TicketRepository {
         ([row.city, row.state, row.country].filter(Boolean).join(", ") ||
           row.address) ??
         undefined,
-      messages: row.ticket_messages
-        .filter((message) => message.visibility === "CUSTOMER")
-        .map((message) => ({
-          id: message.id,
-          authorName: message.author?.full_name ?? "",
-          body: message.body,
-          visibility: message.visibility,
-          createdAt: message.created_at
-        })),
+      visitScheduledAt: row.technical_visits
+        .filter((visit) => visit.status === "SCHEDULED" && visit.scheduled_at)
+        .map((visit) => visit.scheduled_at as string)
+        .sort()
+        .at(0),
+      messages: row.ticket_messages.map((message) => ({
+        id: message.id,
+        authorName: message.author?.full_name ?? "",
+        body: message.body,
+        visibility: message.visibility,
+        createdAt: message.created_at
+      })),
       history: row.ticket_history.map((item) => ({
         id: item.id,
         action: item.action,

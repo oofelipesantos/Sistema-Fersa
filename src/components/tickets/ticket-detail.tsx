@@ -11,15 +11,18 @@ import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PriorityBadge, StatusBadge } from "./ticket-badges";
 import type { Locale, Ticket } from "@/types/domain";
+import { TicketWorkflowPanel } from "./ticket-workflow-panel";
 
 export function TicketDetail({
   ticket,
   locale,
-  internal = false
+  internal = false,
+  onChange
 }: {
   ticket: Ticket;
   locale: Locale;
   internal?: boolean;
+  onChange?: (ticket: Ticket) => void;
 }) {
   const t = useTranslations("ticket");
   const common = useTranslations("common");
@@ -27,6 +30,9 @@ export function TicketDetail({
     dateStyle: "short",
     timeStyle: "short"
   });
+  const visibleMessages = ticket.messages.filter(
+    (message) => internal || message.visibility === "CUSTOMER"
+  );
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -46,6 +52,9 @@ export function TicketDetail({
           <PriorityBadge priority={ticket.priority} />
         </div>
       </div>
+      {internal && onChange && (
+        <TicketWorkflowPanel onChange={onChange} ticket={ticket} />
+      )}
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
@@ -58,6 +67,16 @@ export function TicketDetail({
               </p>
               <p className="mt-1 text-sm leading-6">{ticket.description}</p>
             </div>
+            {ticket.resolutionSummary && (
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">
+                  {t("resolution")}
+                </p>
+                <p className="mt-1 text-sm leading-6 text-emerald-900">
+                  {ticket.resolutionSummary}
+                </p>
+              </div>
+            )}
             <div className="grid gap-3 sm:grid-cols-2">
               <Detail label={t("product")} value={ticket.productPartNumber} />
               <Detail
@@ -83,6 +102,12 @@ export function TicketDetail({
                   value={ticket.assigneeName ?? common("notAvailable")}
                 />
                 <Detail label={t("country")} value={ticket.country} />
+                {ticket.visitScheduledAt && (
+                  <Detail
+                    label={t("visitScheduledAt")}
+                    value={format.format(new Date(ticket.visitScheduledAt))}
+                  />
+                )}
               </div>
             )}
           </CardContent>
@@ -122,12 +147,19 @@ export function TicketDetail({
             </h2>
           </CardHeader>
           <CardContent className="space-y-4">
-            {ticket.messages.length === 0 ? (
+            {visibleMessages.length === 0 ? (
               <p className="text-sm text-slate-500">{common("notAvailable")}</p>
             ) : (
-              ticket.messages.map((message) => (
+              visibleMessages.map((message) => (
                 <div className="rounded-lg bg-steel-50 p-3" key={message.id}>
-                  <p className="text-xs font-bold">{message.authorName}</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-xs font-bold">{message.authorName}</p>
+                    {internal && message.visibility === "INTERNAL" && (
+                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-800">
+                        {t("internalNote")}
+                      </span>
+                    )}
+                  </div>
                   <p className="mt-1 text-sm">{message.body}</p>
                   <p className="mt-2 text-xs text-slate-500">
                     {format.format(new Date(message.createdAt))}

@@ -12,8 +12,8 @@ describe("getSafeReturnPath", () => {
   });
 
   it("keeps a local return URL", () => {
-    expect(getSafeReturnPath("/tickets/new?product=F15123")).toBe(
-      "/tickets/new?product=F15123"
+    expect(getSafeReturnPath("/tickets/new?product=F400009")).toBe(
+      "/tickets/new?product=F400009"
     );
   });
 });

@@ -24,7 +24,7 @@ export function PartNumberFinder({
   const router = useRouter();
   const form = useForm<PartNumberValues>({
     resolver: zodResolver(partNumberSchema),
-    defaultValues: { partNumber: "F15123" }
+    defaultValues: { partNumber: "F400009" }
   });
   function submit(values: PartNumberValues) {
     router.push(`/products/${values.partNumber.trim().toUpperCase()}`);

@@ -18,6 +18,16 @@ import { AuthService } from "@/services/auth-service";
 
 const demoAccounts = [
   { key: "demoCustomer", email: "demo@fersa.test", password: "Demo123!" },
+  {
+    key: "demoSupport",
+    email: "support@fersa.test",
+    password: "Support123!"
+  },
+  {
+    key: "demoTechnician",
+    email: "rafael@fersa.test",
+    password: "Tech123!"
+  },
   { key: "demoAdmin", email: "admin@fersa.test", password: "Admin123!" }
 ] as const;
 

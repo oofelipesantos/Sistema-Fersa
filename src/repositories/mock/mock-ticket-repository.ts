@@ -1,6 +1,13 @@
 import type { TicketRepository } from "@/repositories/contracts";
-import type { CreateTicketInput, Ticket } from "@/types/domain";
-import { mockCategories, mockProducts } from "./mock-data";
+import type {
+  CreateTicketInput,
+  Ticket,
+  TicketHistoryItem,
+  TicketMessage,
+  TicketWorkflowAction,
+  UserRole
+} from "@/types/domain";
+import { mockCategories, mockProducts, mockTechnicians } from "./mock-data";
 import {
   canAccessTicket,
   isInternalRole
@@ -55,6 +62,167 @@ export class MockTicketRepository implements TicketRepository {
     };
   }
 
+  async listTechnicians() {
+    const session = readMockSession();
+    if (!session || !isInternalRole(session.user.role))
+      throw new Error("ACCESS_DENIED");
+    const tickets = readMockState().tickets;
+    return mockTechnicians.map((technician) => ({
+      ...technician,
+      activeTicketCount: tickets.filter(
+        (ticket) =>
+          ticket.assigneeName === technician.fullName &&
+          !["RESOLVED", "CANCELLED"].includes(ticket.status)
+      ).length,
+      resolvedTicketCount: tickets.filter(
+        (ticket) =>
+          ticket.assigneeName === technician.fullName &&
+          ticket.status === "RESOLVED"
+      ).length
+    }));
+  }
+
+  async applyWorkflow(ticketId: string, action: TicketWorkflowAction) {
+    const session = readMockSession();
+    if (!session || !isInternalRole(session.user.role))
+      throw new Error("ACCESS_DENIED");
+    const state = readMockState();
+    const ticket = state.tickets.find((candidate) => candidate.id === ticketId);
+    if (
+      !ticket ||
+      !canAccessTicket(session, ticket.customerId, ticket.assigneeName)
+    )
+      throw new Error("TICKET_NOT_FOUND");
+    const now = new Date().toISOString();
+    const actor = session.user.fullName;
+    const history = (name: string): TicketHistoryItem => ({
+      id: `${ticket.id}-${name.toLowerCase()}-${Date.now()}`,
+      action: name,
+      createdAt: now
+    });
+    const message = (
+      body: string,
+      visibility: TicketMessage["visibility"] = "CUSTOMER"
+    ): TicketMessage => ({
+      id: `${ticket.id}-message-${Date.now()}-${ticket.messages.length}`,
+      authorName: actor,
+      body: body.trim(),
+      visibility,
+      createdAt: now
+    });
+    const requireRole = (roles: UserRole[]) => {
+      if (!roles.includes(session.user.role)) throw new Error("ACCESS_DENIED");
+    };
+    const ensureOpen = () => {
+      if (["RESOLVED", "CANCELLED"].includes(ticket.status))
+        throw new Error("TICKET_CLOSED");
+    };
+
+    switch (action.type) {
+      case "TAKE":
+        requireRole(["SUPPORT", "ADMIN"]);
+        ensureOpen();
+        ticket.assigneeName = actor;
+        ticket.status = "IN_PROGRESS";
+        ticket.history.push(history("SUPPORT_ASSIGNED"));
+        break;
+      case "REPLY":
+        ensureOpen();
+        if (!action.message.trim()) throw new Error("MESSAGE_REQUIRED");
+        ticket.messages.push(message(action.message, action.visibility));
+        if (ticket.status === "NEW" || ticket.status === "WAITING_CUSTOMER")
+          ticket.status = "IN_PROGRESS";
+        if (!ticket.assigneeName) ticket.assigneeName = actor;
+        ticket.history.push(history("MESSAGE_SENT"));
+        break;
+      case "REQUEST_INFORMATION":
+        requireRole(["SUPPORT", "ADMIN"]);
+        ensureOpen();
+        if (!action.message.trim()) throw new Error("MESSAGE_REQUIRED");
+        ticket.messages.push(message(action.message));
+        ticket.assigneeName = actor;
+        ticket.status = "WAITING_CUSTOMER";
+        ticket.history.push(history("CUSTOMER_INFORMATION_REQUESTED"));
+        break;
+      case "ASSIGN_TECHNICIAN": {
+        requireRole(["SUPPORT", "ADMIN"]);
+        ensureOpen();
+        const technician = state.users.find(
+          (user) =>
+            user.id === action.technicianId &&
+            user.role === "TECHNICIAN" &&
+            user.active
+        );
+        if (!technician) throw new Error("TECHNICIAN_NOT_FOUND");
+        ticket.assigneeName = technician.fullName;
+        ticket.status = "TECHNICIAN_ASSIGNED";
+        ticket.messages.push(
+          message(
+            action.note?.trim() ||
+              `A solicitação foi encaminhada para ${technician.fullName}, que dará continuidade à análise técnica.`
+          )
+        );
+        ticket.history.push(history("TECHNICIAN_ASSIGNED"));
+        break;
+      }
+      case "MARK_VISIT_REQUIRED":
+        ensureOpen();
+        if (!action.note.trim()) throw new Error("MESSAGE_REQUIRED");
+        ticket.status = "VISIT_REQUIRED";
+        ticket.messages.push(message(action.note));
+        ticket.history.push(history("VISIT_REQUIRED"));
+        break;
+      case "SCHEDULE_VISIT": {
+        ensureOpen();
+        const scheduledAt = new Date(action.scheduledAt);
+        if (Number.isNaN(scheduledAt.getTime()))
+          throw new Error("INVALID_VISIT_DATE");
+        if (action.technicianId) {
+          requireRole(["SUPPORT", "ADMIN"]);
+          const technician = state.users.find(
+            (user) =>
+              user.id === action.technicianId &&
+              user.role === "TECHNICIAN" &&
+              user.active
+          );
+          if (!technician) throw new Error("TECHNICIAN_NOT_FOUND");
+          ticket.assigneeName = technician.fullName;
+        }
+        ticket.visitScheduledAt = scheduledAt.toISOString();
+        ticket.status = "VISIT_SCHEDULED";
+        ticket.messages.push(
+          message(
+            action.note?.trim() ||
+              `Visita técnica agendada para ${scheduledAt.toLocaleString("pt-BR")}.`
+          )
+        );
+        ticket.history.push(history("VISIT_SCHEDULED"));
+        break;
+      }
+      case "RESOLVE":
+        ensureOpen();
+        if (!action.resolution.trim()) throw new Error("MESSAGE_REQUIRED");
+        ticket.resolutionSummary = action.resolution.trim();
+        ticket.status = "RESOLVED";
+        ticket.messages.push(message(action.resolution));
+        ticket.history.push(history("TICKET_RESOLVED"));
+        break;
+      case "REOPEN":
+        requireRole(["SUPPORT", "ADMIN"]);
+        if (ticket.status !== "RESOLVED") throw new Error("INVALID_TRANSITION");
+        if (!action.reason.trim()) throw new Error("MESSAGE_REQUIRED");
+        ticket.status = "IN_PROGRESS";
+        ticket.resolutionSummary = undefined;
+        ticket.messages.push(message(action.reason));
+        ticket.history.push(history("TICKET_REOPENED"));
+        break;
+    }
+
+    ticket.updatedAt = now;
+    writeMockState(state);
+    return JSON.parse(JSON.stringify(ticket)) as Ticket;
+  }
+
   async create(input: CreateTicketInput): Promise<Ticket> {
     const session = readMockSession();
     if (!session) throw new Error("AUTHENTICATION_REQUIRED");
@@ -83,9 +251,9 @@ export class MockTicketRepository implements TicketRepository {
       productPartNumber: product.partNumber,
       issueTitle: category.translations,
       description: input.description,
-      status: "NEW",
+      status: "WAITING_SUPPORT",
       priority: "MEDIUM",
-      branchName: "Regional team (demo)",
+      branchName: "Suporte América do Sul",
       updatedAt: now,
       createdAt: now,
       equipment: input.equipment || undefined,
@@ -98,6 +266,11 @@ export class MockTicketRepository implements TicketRepository {
         {
           id: `${nextNumber}-created`,
           action: "TICKET_CREATED",
+          createdAt: now
+        },
+        {
+          id: `${nextNumber}-routed`,
+          action: "ROUTED_TO_BRANCH",
           createdAt: now
         }
       ],

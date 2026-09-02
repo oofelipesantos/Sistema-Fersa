@@ -55,7 +55,25 @@ flowchart LR
 
 O conteúdo técnico permanece público, enquanto chamados, anexos, histórico e dados da empresa exigem uma sessão válida.
 
+### Fluxo interno de atendimento
+
+```mermaid
+flowchart LR
+    A[Cliente solicita ajuda] --> B[Suporte assume e tenta resolver]
+    B --> C{Resolvido remotamente?}
+    C -- Sim --> D[Registrar solução e encerrar]
+    C -- Não --> E[Selecionar técnico]
+    E --> F[Análise remota ou visita]
+    F --> D
+```
+
+O suporte preserva a responsabilidade pelo acompanhamento mesmo quando o caso é encaminhado. Mensagens, responsável, histórico, visita e solução permanecem na mesma solicitação. No modo demonstrativo, essas transições são persistidas no navegador e alimentam automaticamente as páginas de técnicos, visitas e relatórios.
+
 ![Página de produto com conteúdo público e ações protegidas](docs/assets/fersa-produto.png)
+
+### Exemplos do catálogo
+
+Os dados demonstrativos usam referências públicas reais do portfólio Fersa — F400009, F15097, F15120, F200013 e F400012 — com aplicações e dimensões baseadas no [catálogo de Wheel End Units](https://www.fersa.com/uploads/files/catalogos/Fersa-WHU_EN-Wheel-end-units-CV.pdf) e na [faixa pública de produtos](https://www.fersa.com/en/product-range/wheel-end-hub-units-for-commercial-vehicles).
 
 ## Resultados esperados
 
@@ -139,7 +157,7 @@ Os controles de interface orientam a navegação, mas as políticas RLS são a f
 
 Na validação desta versão:
 
-- **35 testes automatizados aprovados**;
+- **37 testes automatizados aprovados**;
 - **3 idiomas** com chaves sincronizadas;
 - **0 vulnerabilidades** reportadas pelo `npm audit`;
 - build de produção aprovado;
@@ -162,10 +180,12 @@ Acesse `http://localhost:3000/pt-BR`. No modo demonstrativo, nenhum projeto Supa
 
 ### Contas de demonstração
 
-| Perfil                | E-mail             | Senha       |
-| --------------------- | ------------------ | ----------- |
-| Portal do cliente     | `demo@fersa.test`  | `Demo123!`  |
-| Administração interna | `admin@fersa.test` | `Admin123!` |
+| Perfil                | E-mail               | Senha         |
+| --------------------- | -------------------- | ------------- |
+| Portal do cliente     | `demo@fersa.test`    | `Demo123!`    |
+| Equipe de suporte     | `support@fersa.test` | `Support123!` |
+| Técnico de campo      | `rafael@fersa.test`  | `Tech123!`    |
+| Administração interna | `admin@fersa.test`   | `Admin123!`   |
 
 Novas contas, sessões, ações de revisão e chamados do modo mock são gravados no `localStorage`. As credenciais acima existem somente nessa simulação; o modo Supabase utiliza o Supabase Auth.
 

@@ -6,8 +6,8 @@ import type {
 } from "@/types/domain";
 import { mockTickets } from "./mock-data";
 
-const stateKey = "fersa-mock-state-v2";
-const sessionKey = "fersa-mock-session-v2";
+const stateKey = "fersa-mock-state-v3";
+const sessionKey = "fersa-mock-session-v3";
 
 export interface MockStoredUser extends UserProfile {
   password: string;
@@ -74,6 +74,74 @@ const seedOrganizations: Organization[] = [
     active: false,
     createdAt: "2026-08-20T11:00:00.000Z",
     updatedAt: "2026-08-24T11:00:00.000Z"
+  },
+  {
+    id: "org-sul-cargas",
+    name: "Sul Cargas",
+    type: "CUSTOMER",
+    taxDocument: "45.710.234/0001-02",
+    country: "Brasil",
+    verificationStatus: "VERIFIED",
+    verificationRequestedAt: "2026-07-14T13:00:00.000Z",
+    verifiedAt: "2026-07-15T09:30:00.000Z",
+    verifiedBy: "Equipe Fersa",
+    active: true,
+    createdAt: "2026-07-14T13:00:00.000Z",
+    updatedAt: "2026-07-15T09:30:00.000Z"
+  },
+  {
+    id: "org-oeste-truck",
+    name: "Oeste Truck Center",
+    type: "WORKSHOP",
+    taxDocument: "31.948.771/0001-40",
+    country: "Brasil",
+    verificationStatus: "VERIFIED",
+    verificationRequestedAt: "2026-06-05T15:00:00.000Z",
+    verifiedAt: "2026-06-06T11:00:00.000Z",
+    verifiedBy: "Equipe Fersa",
+    active: true,
+    createdAt: "2026-06-05T15:00:00.000Z",
+    updatedAt: "2026-06-06T11:00:00.000Z"
+  },
+  {
+    id: "org-iberica-fleet",
+    name: "Ibérica Fleet Service",
+    type: "DISTRIBUTOR",
+    taxDocument: "ES-B12944571",
+    country: "Espanha",
+    verificationStatus: "VERIFIED",
+    verificationRequestedAt: "2026-05-18T08:00:00.000Z",
+    verifiedAt: "2026-05-18T14:00:00.000Z",
+    verifiedBy: "Equipo Fersa",
+    active: true,
+    createdAt: "2026-05-18T08:00:00.000Z",
+    updatedAt: "2026-05-18T14:00:00.000Z"
+  },
+  {
+    id: "org-minas-diesel",
+    name: "Minas Diesel",
+    type: "DISTRIBUTOR",
+    taxDocument: "19.772.431/0001-66",
+    country: "Brasil",
+    verificationStatus: "VERIFIED",
+    verificationRequestedAt: "2026-04-10T10:00:00.000Z",
+    verifiedAt: "2026-04-11T10:00:00.000Z",
+    verifiedBy: "Equipe Fersa",
+    active: true,
+    createdAt: "2026-04-10T10:00:00.000Z",
+    updatedAt: "2026-04-11T10:00:00.000Z"
+  },
+  {
+    id: "org-norte-implementos",
+    name: "Norte Implementos",
+    type: "WORKSHOP",
+    taxDocument: "27.120.091/0001-39",
+    country: "Brasil",
+    verificationStatus: "PENDING",
+    verificationRequestedAt: "2026-09-01T11:00:00.000Z",
+    active: true,
+    createdAt: "2026-09-01T11:00:00.000Z",
+    updatedAt: "2026-09-01T11:00:00.000Z"
   }
 ];
 
@@ -111,6 +179,42 @@ const seedUsers: MockStoredUser[] = [
     role: "SUPPORT",
     organizationId: "org-fersa",
     preferredLocale: "es",
+    active: true,
+    createdAt: now
+  },
+  {
+    id: "technician-rafael",
+    fullName: "Rafael Mendes",
+    email: "rafael@fersa.test",
+    phone: "+55 41 98888-0142",
+    password: "Tech123!",
+    role: "TECHNICIAN",
+    organizationId: "org-fersa",
+    preferredLocale: "pt-BR",
+    active: true,
+    createdAt: now
+  },
+  {
+    id: "technician-sofia",
+    fullName: "Sofía Álvarez",
+    email: "sofia@fersa.test",
+    phone: "+34 600 555 014",
+    password: "Tech123!",
+    role: "TECHNICIAN",
+    organizationId: "org-fersa",
+    preferredLocale: "es",
+    active: true,
+    createdAt: now
+  },
+  {
+    id: "technician-daniel",
+    fullName: "Daniel Brooks",
+    email: "daniel@fersa.test",
+    phone: "+1 567 661 0810",
+    password: "Tech123!",
+    role: "TECHNICIAN",
+    organizationId: "org-fersa",
+    preferredLocale: "en",
     active: true,
     createdAt: now
   },

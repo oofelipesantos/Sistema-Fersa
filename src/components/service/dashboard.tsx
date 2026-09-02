@@ -4,9 +4,12 @@ import {
   ArrowRight,
   CheckCircle2,
   Clock3,
+  Headphones,
   Languages,
+  MessageCircleQuestion,
   TimerReset,
-  UserRoundCheck
+  UserRoundCheck,
+  Wrench
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
@@ -48,8 +51,39 @@ export function Dashboard({
       icon: Languages
     }
   ] as const;
+  const flow = [
+    { label: t("flowCustomer"), icon: MessageCircleQuestion },
+    { label: t("flowSupport"), icon: Headphones },
+    { label: t("flowTechnician"), icon: Wrench },
+    { label: t("flowResolution"), icon: CheckCircle2 }
+  ];
   return (
     <div className="space-y-6">
+      <Card className="overflow-hidden border-navy-600/20">
+        <CardContent className="p-0">
+          <div className="bg-navy-900 px-5 py-4 text-white">
+            <p className="text-xs font-bold uppercase tracking-wide text-blue-200">
+              {t("flowEyebrow")}
+            </p>
+            <h2 className="mt-1 text-lg font-bold">{t("flowTitle")}</h2>
+          </div>
+          <ol className="grid gap-px bg-steel-200 sm:grid-cols-4">
+            {flow.map(({ label, icon: Icon }, index) => (
+              <li className="relative bg-white p-4" key={label}>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-navy-50 font-bold text-navy-700">
+                    {index + 1}
+                  </span>
+                  <span className="flex items-center gap-2 text-sm font-bold">
+                    <Icon className="h-4 w-4 text-navy-700" aria-hidden />
+                    {label}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </CardContent>
+      </Card>
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map(({ key, value, icon: Icon }) => (
           <Card key={key}>
@@ -80,7 +114,7 @@ export function Dashboard({
               </Link>
             </div>
             <div className="divide-y">
-              {tickets.map((ticket) => (
+              {tickets.slice(0, 5).map((ticket) => (
                 <Link
                   className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0"
                   href={`/service/tickets/${ticket.id}`}
