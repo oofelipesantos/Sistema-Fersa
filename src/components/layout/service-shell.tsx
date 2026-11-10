@@ -9,6 +9,7 @@ import {
   Cog,
   House,
   Package,
+  Presentation,
   Ticket,
   Users,
   Wrench
@@ -45,12 +46,9 @@ export function ServiceShell({ children }: { children: React.ReactNode }) {
   return (
     <ProtectedRoute roles={["SUPPORT", "TECHNICIAN", "ADMIN"]}>
       <div className="min-h-dvh bg-steel-50 lg:grid lg:grid-cols-[256px_1fr]">
-        <aside className="hidden min-h-dvh border-r bg-white p-4 lg:block">
+        <aside className="sticky top-0 hidden h-dvh flex-col border-r bg-white p-4 lg:flex">
           <div className="mb-8">
             <Brand />
-            <p className="mt-2 pl-10 text-xs text-slate-500">
-              {t("serviceDesk")}
-            </p>
           </div>
           <nav className="space-y-1">
             {links.map(({ href, key, icon: Icon }) => (
@@ -64,6 +62,13 @@ export function ServiceShell({ children }: { children: React.ReactNode }) {
               </Link>
             ))}
           </nav>
+          <Link
+            className="mt-auto flex items-center gap-3 rounded-lg border border-dashed px-3 py-2.5 text-sm font-semibold text-navy-700 hover:border-navy-600"
+            href="/pitch"
+          >
+            <Presentation className="h-4 w-4" aria-hidden />
+            {t("pitch")}
+          </Link>
         </aside>
         <div>
           <header className="flex h-16 items-center justify-between border-b bg-white px-4 lg:px-8">
@@ -91,7 +96,7 @@ export function ServiceShell({ children }: { children: React.ReactNode }) {
             <div className="flex min-w-max gap-1 py-2">
               {links.map(({ href, key, icon: Icon }) => (
                 <Link
-                  className={`flex min-h-12 items-center gap-2 rounded-lg px-3 text-sm font-semibold ${isActive(href) ? "text-navy-800 bg-navy-50" : "text-slate-700"}`}
+                  className={`flex min-h-12 items-center gap-2 rounded-lg px-3 text-sm font-semibold ${isActive(href) ? "bg-navy-50 text-navy-800" : "text-slate-700"}`}
                   href={href}
                   key={key}
                 >

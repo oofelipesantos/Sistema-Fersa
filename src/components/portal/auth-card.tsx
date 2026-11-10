@@ -15,21 +15,7 @@ import { loginSchema, type LoginValues } from "@/features/auth/auth-schema";
 import { Link, useRouter } from "@/i18n/navigation";
 import { isMockMode } from "@/lib/utils";
 import { AuthService } from "@/services/auth-service";
-
-const demoAccounts = [
-  { key: "demoCustomer", email: "demo@fersa.test", password: "Demo123!" },
-  {
-    key: "demoSupport",
-    email: "support@fersa.test",
-    password: "Support123!"
-  },
-  {
-    key: "demoTechnician",
-    email: "rafael@fersa.test",
-    password: "Tech123!"
-  },
-  { key: "demoAdmin", email: "admin@fersa.test", password: "Admin123!" }
-] as const;
+import { DemoPersonas } from "./demo-personas";
 
 export function AuthCard({ returnTo }: { returnTo?: string }) {
   const t = useTranslations("auth");
@@ -131,30 +117,7 @@ export function AuthCard({ returnTo }: { returnTo?: string }) {
           <div className="mt-6 border-t pt-5">
             <p className="text-base font-bold">{t("demoAccounts")}</p>
             <p className="mt-1 text-sm text-slate-600">{t("demoHint")}</p>
-            <div className="mt-3 grid gap-2">
-              {demoAccounts.map((account) => (
-                <Button
-                  className="h-auto min-h-12 justify-start px-4 py-2 text-left"
-                  key={account.email}
-                  onClick={() => {
-                    form.setValue("email", account.email, {
-                      shouldValidate: true
-                    });
-                    form.setValue("password", account.password, {
-                      shouldValidate: true
-                    });
-                  }}
-                  variant="outline"
-                >
-                  <span>
-                    <span className="block">{t(account.key)}</span>
-                    <span className="block text-xs font-normal text-slate-500">
-                      {account.email} · {account.password}
-                    </span>
-                  </span>
-                </Button>
-              ))}
-            </div>
+            <DemoPersonas className="mt-3" columns={1} />
           </div>
         )}
       </CardContent>

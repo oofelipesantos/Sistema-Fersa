@@ -18,7 +18,8 @@
     "english": "English",
     "goToProduct": "Abrir producto",
     "learnMore": "Más información",
-    "loading": "Cargando…"
+    "loading": "Cargando…",
+    "product": "Soporte técnico"
   },
   "nav": {
     "home": "Inicio",
@@ -37,7 +38,10 @@
     "reports": "Informes",
     "settings": "Configuración",
     "serviceDesk": "Mesa de servicio",
-    "signOut": "Salir"
+    "signOut": "Salir",
+    "catalog": "Catálogo",
+    "scanShort": "Escanear",
+    "pitch": "Presentación"
   },
   "portal": {
     "greeting": "Hola, {name}",
@@ -61,7 +65,11 @@
     "welcome": "Bienvenido al soporte Fersa",
     "pendingVerification": "Tu empresa está pendiente de verificación. Ya puedes abrir y seguir tickets.",
     "signedInNotice": "Cuenta vinculada a la empresa {organization}.",
-    "publicNotice": "Consulta productos y contenido técnico sin ingresar. Para abrir un ticket, crea tu cuenta."
+    "publicNotice": "Consulta productos y contenido técnico sin ingresar. Para abrir un ticket, crea tu cuenta.",
+    "catalogCta": "Ver catálogo",
+    "tryExamples": "Pruebe: F400009, F15097, F15120, F200013 o F400012",
+    "pitchTitle": "Conozca el proyecto Fersa Support",
+    "pitchDescription": "Problema, solución, recorrido y propuesta de piloto"
   },
   "auth": {
     "title": "Accede a Fersa Support",
@@ -88,7 +96,7 @@
     "accountBlocked": "Esta cuenta está bloqueada. Contacta con el equipo Fersa.",
     "signingIn": "Ingresando…",
     "demoAccounts": "Cuentas de demostración",
-    "demoHint": "Elige una cuenta para completar los campos y luego selecciona Ingresar.",
+    "demoHint": "Elija un perfil para entrar directamente en la demostración.",
     "demoCustomer": "Usuario cliente",
     "demoSupport": "Equipo de soporte",
     "demoTechnician": "Técnico de campo",
@@ -442,5 +450,270 @@
     "empty": "No hay visitas programadas en el modo demostración.",
     "checklist": "Lista de verificación de visita"
   },
-  "metadata": { "title": "Fersa Support" }
+  "metadata": {
+    "title": "Fersa Support"
+  },
+  "personas": {
+    "failed": "No fue posible entrar con el perfil de demostración. Inténtelo de nuevo.",
+    "demoCustomer": {
+      "title": "Cliente / taller",
+      "description": "Identifica el producto, consulta contenido y sigue sus solicitudes."
+    },
+    "demoSupport": {
+      "title": "Equipo de soporte",
+      "description": "Recibe, prioriza y resuelve solicitudes con todo el contexto."
+    },
+    "demoTechnician": {
+      "title": "Técnico de campo",
+      "description": "Asume casos derivados y registra análisis o visita."
+    },
+    "demoAdmin": {
+      "title": "Gestión interna",
+      "description": "Sigue indicadores, empresas, técnicos e informes."
+    }
+  },
+  "catalog": {
+    "eyebrow": "Catálogo técnico",
+    "title": "Encuentre la referencia correcta",
+    "subtitle": "Busque por Part Number, aplicación, fabricante o característica técnica. El contenido es público y no requiere inicio de sesión.",
+    "searchPlaceholder": "Ej.: Scania, ABS, F15097, eje delantero…",
+    "filterLabel": "Filtrar por familia",
+    "results": "{count, plural, =0 {Ningún producto} one {# producto} other {# productos}}",
+    "open": "Ver ficha técnica",
+    "emptyTitle": "No se encontraron productos",
+    "emptyText": "Revise el término buscado o limpie los filtros.",
+    "clear": "Limpiar filtros",
+    "linesTitle": "Líneas de producto",
+    "linesSubtitle": "Familias del portafolio Fersa que pueden incorporarse al catálogo digital.",
+    "lines": [
+      {
+        "title": "Rodamientos de rodillos cónicos",
+        "description": "Soportan cargas radiales y axiales combinadas en ruedas, ejes y transmisiones."
+      },
+      {
+        "title": "Cubos y unidades de rueda",
+        "description": "Conjuntos preajustados y lubricados, con o sin sensor ABS integrado."
+      },
+      {
+        "title": "Kits de rodamiento de rueda",
+        "description": "Todo lo que el taller necesita para la sustitución en una sola referencia."
+      },
+      {
+        "title": "Transmisión y diferencial",
+        "description": "Rodamientos para cajas de cambio y diferenciales de vehículos pesados."
+      }
+    ]
+  },
+  "pitch": {
+    "metaTitle": "Presentación",
+    "nav": {
+      "inicio": "Inicio",
+      "fersa": "Fersa",
+      "problema": "Problema",
+      "solucao": "Solución",
+      "jornada": "Recorrido",
+      "demo": "Demostración",
+      "piloto": "Piloto",
+      "enterDemo": "Abrir demostración"
+    },
+    "hero": {
+      "eyebrow": "Propuesta de innovación · Posventa técnica",
+      "title": "Del Part Number a la solución, en un único recorrido digital.",
+      "subtitle": "Fersa Support conecta distribuidores, talleres, flotas y el equipo técnico: identificación del producto, contenido técnico, diagnóstico guiado y solicitudes con contexto, en portugués, español e inglés.",
+      "ctaDemo": "Ver demostración en vivo",
+      "ctaJourney": "Entender el recorrido",
+      "hint": "Consejo para presentar: use ← y → (o el pasador de diapositivas) para navegar entre secciones.",
+      "desktopAlt": "Service desk con indicadores de atención",
+      "mobileAlt": "Portal del cliente en el móvil"
+    },
+    "about": {
+      "eyebrow": "Contexto",
+      "title": "Una referencia global en rodamientos necesita una posventa a la altura",
+      "body": "Fersa diseña, fabrica y distribuye rodamientos de alto rendimiento para vehículos comerciales, automóviles e industria. Con clientes en todo el mundo, cada atención técnica implica idiomas, aplicaciones y niveles de conocimiento distintos.",
+      "stats": [
+        {
+          "value": "1968",
+          "label": "Origen en Zaragoza, España"
+        },
+        {
+          "value": "+100",
+          "label": "países con presencia comercial"
+        },
+        {
+          "value": "3",
+          "label": "marcas en el grupo: Fersa, NKE y A&S"
+        },
+        {
+          "value": "3",
+          "label": "continentes con producción: Europa, Asia y América"
+        }
+      ],
+      "sectors": [
+        "Vehículos comerciales",
+        "Automoción",
+        "Agrícola",
+        "Industrial"
+      ],
+      "source": "Fuente: información pública de Fersa Group. Datos solo para contextualizar."
+    },
+    "problem": {
+      "eyebrow": "El problema",
+      "title": "Antes de resolver, el cliente necesita llegar a la información correcta",
+      "body": "La fricción no está solo en el problema técnico. Está en todo lo que ocurre antes de que llegue a un especialista.",
+      "items": [
+        {
+          "title": "Producto mal identificado",
+          "description": "Part Number, aplicación o referencia OEM incompletos generan consultas lentas y cambios incorrectos."
+        },
+        {
+          "title": "Canales desconectados",
+          "description": "Catálogo, manuales, diagnóstico y solicitudes viven en lugares distintos, sin continuidad."
+        },
+        {
+          "title": "Poca visibilidad",
+          "description": "Cliente y equipo no ven el historial ni el estado de la atención en tiempo real."
+        },
+        {
+          "title": "Retrabajo en la clasificación",
+          "description": "Las solicitudes llegan sin fotos, síntomas ni datos del equipo y exigen varias idas y vueltas."
+        }
+      ]
+    },
+    "solution": {
+      "eyebrow": "La solución",
+      "title": "Una puerta de entrada única para la posventa técnica",
+      "body": "Una aplicación web instalable (PWA), pensada para el móvil en el taller y el escritorio en la oficina. Cada tarjeta abre la funcionalidad real.",
+      "items": [
+        {
+          "title": "Escanee e identifique",
+          "description": "QR o Part Number llevan directo a la ficha técnica correcta, sin inicio de sesión.",
+          "cta": "Abrir escáner"
+        },
+        {
+          "title": "Catálogo con búsqueda",
+          "description": "Busque por aplicación, fabricante, OEM o característica técnica.",
+          "cta": "Abrir catálogo"
+        },
+        {
+          "title": "Diagnóstico guiado",
+          "description": "Paso a paso para los problemas más frecuentes antes de abrir una solicitud.",
+          "cta": "Iniciar diagnóstico"
+        },
+        {
+          "title": "Solicitud con contexto",
+          "description": "Producto, síntomas, equipo, ubicación y adjuntos llegan juntos al soporte.",
+          "cta": "Abrir solicitud"
+        },
+        {
+          "title": "Service desk y técnicos",
+          "description": "Cola, prioridad, derivación a técnico, visitas e informes.",
+          "cta": "Ver service desk"
+        },
+        {
+          "title": "Pensado en 3 idiomas",
+          "description": "Portugués, español e inglés sincronizados en toda la interfaz.",
+          "cta": "Ver en inglés"
+        }
+      ]
+    },
+    "journey": {
+      "eyebrow": "El recorrido",
+      "title": "Una solicitud, un historial, tantos niveles como sean necesarios",
+      "body": "El cliente resuelve solo lo sencillo. Lo que no, llega al especialista con toda la información.",
+      "steps": [
+        {
+          "title": "Identificar",
+          "description": "QR, Part Number o búsqueda en el catálogo."
+        },
+        {
+          "title": "Consultar",
+          "description": "Ficha técnica, manuales, vídeos y problemas frecuentes."
+        },
+        {
+          "title": "Diagnosticar",
+          "description": "Una lista guiada resuelve casos simples sin solicitud."
+        },
+        {
+          "title": "Abrir solicitud",
+          "description": "El asistente recoge producto, síntomas, fotos y ubicación."
+        },
+        {
+          "title": "Atender",
+          "description": "Soporte asume y, si hace falta, activa un técnico o visita."
+        },
+        {
+          "title": "Registrar",
+          "description": "La solución documentada alimenta la base de conocimiento."
+        }
+      ],
+      "publicLabel": "Abierto al público",
+      "publicText": "Productos, catálogo, manuales y diagnóstico no requieren cuenta: cualquier mecánico consulta al instante.",
+      "protectedLabel": "Protegido por inicio de sesión",
+      "protectedText": "Solicitudes, adjuntos, historial y datos de la empresa quedan aislados por organización (Row Level Security)."
+    },
+    "demo": {
+      "eyebrow": "Demostración en vivo",
+      "title": "Pruébelo ahora, con cualquier perfil",
+      "body": "El prototipo funciona de principio a fin. Entre con un clic como cliente, soporte, técnico o gestor y siga la misma solicitud por toda la operación.",
+      "publicProduct": "Ficha del F400009",
+      "publicDiagnosis": "Diagnóstico guiado",
+      "personasLabel": "Entrar con un clic como",
+      "note": "Modo demostración: los datos se guardan solo en este navegador."
+    },
+    "pilot": {
+      "eyebrow": "Próximos pasos",
+      "title": "Propuesta de piloto controlado",
+      "body": "Validar con usuarios reales antes de escalar. Los beneficios son hipótesis que el piloto debe medir frente a una línea base acordada.",
+      "phases": [
+        {
+          "label": "Fase 1",
+          "title": "Piloto",
+          "description": "Una línea de producto, un país y un grupo de distribuidores y talleres socios."
+        },
+        {
+          "label": "Fase 2",
+          "title": "Integración",
+          "description": "Conectar catálogo oficial, CRM/ERP y autenticación corporativa; ampliar el contenido técnico."
+        },
+        {
+          "label": "Fase 3",
+          "title": "Escala",
+          "description": "Expandir a nuevos mercados e idiomas según los indicadores del piloto."
+        }
+      ],
+      "metricsTitle": "Qué medir en el piloto",
+      "metrics": [
+        "Tiempo para abrir una solicitud",
+        "Completitud de los datos en la primera apertura",
+        "Casos resueltos sin solicitud (autoservicio)",
+        "Satisfacción percibida por clientes y equipo"
+      ],
+      "metricsNote": "Sin una línea base operativa, el proyecto no promete porcentajes."
+    },
+    "readiness": {
+      "title": "Listo para evolucionar",
+      "items": [
+        {
+          "title": "PWA mobile-first",
+          "description": "Instalable, funciona en el móvil del taller"
+        },
+        {
+          "title": "3 idiomas",
+          "description": "PT, ES y EN con claves sincronizadas"
+        },
+        {
+          "title": "Seguro por defecto",
+          "description": "Supabase Auth y aislamiento por empresa"
+        },
+        {
+          "title": "Indicadores nativos",
+          "description": "Dashboard, SLA e informes de atención"
+        }
+      ]
+    },
+    "closing": {
+      "title": "Menos fricción para el cliente. Más contexto para quien resuelve."
+    },
+    "footer": "Proyecto demostrativo y no oficial, desarrollado como propuesta de innovación para la posventa técnica. Las marcas y productos citados sirven solo para contextualizar el prototipo."
+  }
 }

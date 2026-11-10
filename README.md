@@ -2,7 +2,7 @@
 
 ### Atendimento técnico simples, seguro e escalável
 
-[Acessar demonstração](https://sistema-fersa.vercel.app/pt-BR) · [Baixar apresentação institucional](docs/Fersa-Support-Apresentacao-Institucional.pptx)
+[Acessar demonstração](https://sistema-fersa.vercel.app/pt-BR) · [Página de apresentação](https://sistema-fersa.vercel.app/pt-BR/pitch) · [Baixar apresentação institucional](docs/Fersa-Support-Apresentacao-Institucional.pptx)
 
 > [!IMPORTANT]
 > Projeto demonstrativo e não oficial, desenvolvido como proposta de inovação para o pós-venda técnico. Marcas, produtos e fluxos apresentados servem exclusivamente para contextualizar o protótipo.
@@ -39,6 +39,22 @@ A proposta cria uma porta de entrada digital única para o pós-venda técnico:
 <p align="center">
   <img src="docs/assets/fersa-cadastro-mobile.png" alt="Cadastro mobile em etapas" width="260" />
 </p>
+
+## Roteiro para o pitch
+
+A rota `/pt-BR/pitch` (também em `/es/pitch` e `/en/pitch`) é uma página de apresentação dentro do próprio app: contexto da Fersa, problema, solução, jornada, demonstração ao vivo e proposta de piloto. Use `←` e `→` (ou um passador de slides) para avançar entre as seções.
+
+Sugestão de demonstração em cerca de 5 minutos:
+
+1. **Abertura:** `/pitch`, seções Início → A Fersa → Problema.
+2. **Solução:** clique em _Abrir catálogo_, busque `Scania` e abra a ficha do F15097.
+3. **Autoatendimento:** na ficha, _Iniciar diagnóstico_ mostra o checklist guiado.
+4. **Cliente:** volte ao `/pitch#demo` e entre como _Cliente / oficina_; abra um chamado com contexto.
+5. **Operação:** entre como _Equipe de suporte_, assuma o chamado e encaminhe a um técnico.
+6. **Técnico e gestão:** entre como _Técnico de campo_ e depois _Gestão interna_ para ver fila e relatórios.
+7. **Fechamento:** seção _Piloto_ com fases e indicadores a medir.
+
+Os perfis de demonstração entram com um clique, sem digitar senha, tanto no `/pitch` quanto na tela de login.
 
 ## Jornada do usuário
 

@@ -18,7 +18,8 @@
     "english": "English",
     "goToProduct": "Abrir produto",
     "learnMore": "Saiba mais",
-    "loading": "Carregando…"
+    "loading": "Carregando…",
+    "product": "Suporte técnico"
   },
   "nav": {
     "home": "Início",
@@ -37,7 +38,10 @@
     "reports": "Relatórios",
     "settings": "Configurações",
     "serviceDesk": "Service desk",
-    "signOut": "Sair"
+    "signOut": "Sair",
+    "catalog": "Catálogo",
+    "scanShort": "Escanear",
+    "pitch": "Apresentação"
   },
   "portal": {
     "greeting": "Olá, {name}",
@@ -61,7 +65,11 @@
     "welcome": "Bem-vindo ao suporte Fersa",
     "pendingVerification": "Sua empresa está aguardando verificação. Você já pode abrir e acompanhar chamados.",
     "signedInNotice": "Conta vinculada à empresa {organization}.",
-    "publicNotice": "Consulte produtos e conteúdos técnicos sem entrar. Para abrir um chamado, crie sua conta."
+    "publicNotice": "Consulte produtos e conteúdos técnicos sem entrar. Para abrir um chamado, crie sua conta.",
+    "catalogCta": "Ver catálogo",
+    "tryExamples": "Experimente: F400009, F15097, F15120, F200013 ou F400012",
+    "pitchTitle": "Conheça o projeto Fersa Support",
+    "pitchDescription": "Problema, solução, jornada e proposta de piloto"
   },
   "auth": {
     "title": "Acesse o Fersa Support",
@@ -88,7 +96,7 @@
     "accountBlocked": "Esta conta está bloqueada. Fale com a equipe Fersa.",
     "signingIn": "Entrando…",
     "demoAccounts": "Contas de demonstração",
-    "demoHint": "Escolha uma conta para preencher os campos e depois selecione Entrar.",
+    "demoHint": "Escolha um perfil para entrar direto na demonstração.",
     "demoCustomer": "Usuário cliente",
     "demoSupport": "Equipe de suporte",
     "demoTechnician": "Técnico de campo",
@@ -442,5 +450,270 @@
     "empty": "Nenhuma visita agendada no modo demonstração.",
     "checklist": "Checklist da visita"
   },
-  "metadata": { "title": "Fersa Support" }
+  "metadata": {
+    "title": "Fersa Support"
+  },
+  "personas": {
+    "failed": "Não foi possível entrar com o perfil de demonstração. Tente novamente.",
+    "demoCustomer": {
+      "title": "Cliente / oficina",
+      "description": "Identifica o produto, consulta conteúdo e acompanha seus chamados."
+    },
+    "demoSupport": {
+      "title": "Equipe de suporte",
+      "description": "Recebe, prioriza e resolve chamados com todo o contexto."
+    },
+    "demoTechnician": {
+      "title": "Técnico de campo",
+      "description": "Assume casos encaminhados e registra análise ou visita."
+    },
+    "demoAdmin": {
+      "title": "Gestão interna",
+      "description": "Acompanha indicadores, empresas, técnicos e relatórios."
+    }
+  },
+  "catalog": {
+    "eyebrow": "Catálogo técnico",
+    "title": "Encontre a referência certa",
+    "subtitle": "Busque por Part Number, aplicação, montadora ou característica técnica. O conteúdo é público e não exige login.",
+    "searchPlaceholder": "Ex.: Scania, ABS, F15097, eixo dianteiro…",
+    "filterLabel": "Filtrar por família",
+    "results": "{count, plural, =0 {Nenhum produto} one {# produto} other {# produtos}}",
+    "open": "Ver ficha técnica",
+    "emptyTitle": "Nenhum produto encontrado",
+    "emptyText": "Revise o termo buscado ou limpe os filtros.",
+    "clear": "Limpar filtros",
+    "linesTitle": "Linhas de produto",
+    "linesSubtitle": "Famílias do portfólio Fersa que podem ser incorporadas ao catálogo digital.",
+    "lines": [
+      {
+        "title": "Rolamentos de rolos cônicos",
+        "description": "Suportam cargas radiais e axiais combinadas em rodas, eixos e transmissões."
+      },
+      {
+        "title": "Cubos e unidades de roda",
+        "description": "Conjuntos pré-ajustados e lubrificados, com ou sem sensor ABS integrado."
+      },
+      {
+        "title": "Kits de rolamento de roda",
+        "description": "Tudo o que a oficina precisa para a substituição em uma única referência."
+      },
+      {
+        "title": "Transmissão e diferencial",
+        "description": "Rolamentos para caixas de câmbio e diferenciais de veículos pesados."
+      }
+    ]
+  },
+  "pitch": {
+    "metaTitle": "Apresentação",
+    "nav": {
+      "inicio": "Início",
+      "fersa": "A Fersa",
+      "problema": "Problema",
+      "solucao": "Solução",
+      "jornada": "Jornada",
+      "demo": "Demonstração",
+      "piloto": "Piloto",
+      "enterDemo": "Abrir demonstração"
+    },
+    "hero": {
+      "eyebrow": "Proposta de inovação · Pós-venda técnico",
+      "title": "Do Part Number à solução, em uma única jornada digital.",
+      "subtitle": "O Fersa Support conecta distribuidores, oficinas, frotistas e a equipe técnica: identificação do produto, conteúdo técnico, diagnóstico guiado e chamados com contexto, em português, espanhol e inglês.",
+      "ctaDemo": "Ver demonstração ao vivo",
+      "ctaJourney": "Entender a jornada",
+      "hint": "Dica para apresentar: use ← e → (ou o passador de slides) para navegar entre as seções.",
+      "desktopAlt": "Service desk com indicadores de atendimento",
+      "mobileAlt": "Portal do cliente no celular"
+    },
+    "about": {
+      "eyebrow": "Contexto",
+      "title": "Uma referência global em rolamentos precisa de um pós-venda à altura",
+      "body": "A Fersa projeta, fabrica e distribui rolamentos de alto desempenho para veículos comerciais, automóveis e indústria. Com uma base de clientes espalhada pelo mundo, cada atendimento técnico envolve idiomas, aplicações e níveis de conhecimento diferentes.",
+      "stats": [
+        {
+          "value": "1968",
+          "label": "Origem em Zaragoza, Espanha"
+        },
+        {
+          "value": "+100",
+          "label": "países com presença comercial"
+        },
+        {
+          "value": "3",
+          "label": "marcas no grupo: Fersa, NKE e A&S"
+        },
+        {
+          "value": "3",
+          "label": "continentes com produção: Europa, Ásia e Américas"
+        }
+      ],
+      "sectors": [
+        "Veículos comerciais",
+        "Automotivo",
+        "Agrícola",
+        "Industrial"
+      ],
+      "source": "Fonte: informações públicas do Fersa Group. Dados apenas para contextualização."
+    },
+    "problem": {
+      "eyebrow": "O problema",
+      "title": "Antes de resolver, o cliente precisa chegar à informação certa",
+      "body": "O atrito não está só no problema técnico. Está em tudo o que acontece antes dele chegar a um especialista.",
+      "items": [
+        {
+          "title": "Produto mal identificado",
+          "description": "Part Number, aplicação ou referência OEM incompletos geram consultas lentas e trocas incorretas."
+        },
+        {
+          "title": "Canais desconectados",
+          "description": "Catálogo, manuais, diagnóstico e chamados vivem em lugares diferentes, sem continuidade."
+        },
+        {
+          "title": "Pouca visibilidade",
+          "description": "Cliente e equipe não enxergam o histórico nem o status do atendimento em tempo real."
+        },
+        {
+          "title": "Retrabalho na triagem",
+          "description": "Chamados chegam sem fotos, sintomas ou dados do equipamento, exigindo várias idas e vindas."
+        }
+      ]
+    },
+    "solution": {
+      "eyebrow": "A solução",
+      "title": "Uma porta de entrada única para o pós-venda técnico",
+      "body": "Um aplicativo web instalável (PWA), pensado para o celular na oficina e para o desktop no escritório. Cada card abaixo abre a funcionalidade real.",
+      "items": [
+        {
+          "title": "Escaneie e identifique",
+          "description": "QR Code ou Part Number levam direto à ficha técnica correta, sem login.",
+          "cta": "Abrir scanner"
+        },
+        {
+          "title": "Catálogo pesquisável",
+          "description": "Busca por aplicação, montadora, OEM ou característica técnica.",
+          "cta": "Abrir catálogo"
+        },
+        {
+          "title": "Diagnóstico guiado",
+          "description": "Passo a passo para os problemas mais frequentes antes de abrir um chamado.",
+          "cta": "Iniciar diagnóstico"
+        },
+        {
+          "title": "Chamado com contexto",
+          "description": "Produto, sintomas, equipamento, local e anexos chegam juntos para o suporte.",
+          "cta": "Abrir chamado"
+        },
+        {
+          "title": "Service desk e técnicos",
+          "description": "Fila, prioridade, encaminhamento para técnico, visitas e relatórios.",
+          "cta": "Ver service desk"
+        },
+        {
+          "title": "Feito para 3 idiomas",
+          "description": "Português, espanhol e inglês sincronizados em toda a interface.",
+          "cta": "Ver em espanhol"
+        }
+      ]
+    },
+    "journey": {
+      "eyebrow": "A jornada",
+      "title": "Uma solicitação, um histórico, quantos níveis forem necessários",
+      "body": "O cliente resolve sozinho o que é simples. O que não é, chega ao especialista com todas as informações.",
+      "steps": [
+        {
+          "title": "Identificar",
+          "description": "QR Code, Part Number ou busca no catálogo."
+        },
+        {
+          "title": "Consultar",
+          "description": "Ficha técnica, manuais, vídeos e problemas frequentes."
+        },
+        {
+          "title": "Diagnosticar",
+          "description": "Checklist guiado resolve casos simples sem chamado."
+        },
+        {
+          "title": "Abrir chamado",
+          "description": "Assistente coleta produto, sintomas, fotos e local."
+        },
+        {
+          "title": "Atender",
+          "description": "Suporte assume e, se preciso, aciona um técnico ou visita."
+        },
+        {
+          "title": "Registrar",
+          "description": "Solução documentada alimenta a base de conhecimento."
+        }
+      ],
+      "publicLabel": "Aberto ao público",
+      "publicText": "Produtos, catálogo, manuais e diagnóstico não exigem conta: qualquer mecânico consulta na hora.",
+      "protectedLabel": "Protegido por login",
+      "protectedText": "Chamados, anexos, histórico e dados da empresa ficam isolados por organização (Row Level Security)."
+    },
+    "demo": {
+      "eyebrow": "Demonstração ao vivo",
+      "title": "Experimente agora, em qualquer perfil",
+      "body": "O protótipo funciona de ponta a ponta. Entre com um clique como cliente, suporte, técnico ou gestor e siga o mesmo chamado por toda a operação.",
+      "publicProduct": "Ficha do F400009",
+      "publicDiagnosis": "Diagnóstico guiado",
+      "personasLabel": "Entrar com um clique como",
+      "note": "Modo demonstrativo: os dados ficam salvos apenas neste navegador."
+    },
+    "pilot": {
+      "eyebrow": "Próximos passos",
+      "title": "Proposta de piloto controlado",
+      "body": "Validar com usuários reais antes de escalar. Os ganhos são hipóteses que o piloto deve medir contra uma linha de base acordada.",
+      "phases": [
+        {
+          "label": "Fase 1",
+          "title": "Piloto",
+          "description": "Uma linha de produto, um país e um grupo de distribuidores e oficinas parceiras."
+        },
+        {
+          "label": "Fase 2",
+          "title": "Integração",
+          "description": "Conectar catálogo oficial, CRM/ERP e autenticação corporativa; ampliar o conteúdo técnico."
+        },
+        {
+          "label": "Fase 3",
+          "title": "Escala",
+          "description": "Expandir para novos mercados e idiomas com base nos indicadores do piloto."
+        }
+      ],
+      "metricsTitle": "O que medir no piloto",
+      "metrics": [
+        "Tempo para abrir um chamado",
+        "Completude dos dados na primeira abertura",
+        "Casos resolvidos sem chamado (autoatendimento)",
+        "Satisfação percebida por clientes e equipe"
+      ],
+      "metricsNote": "Sem linha de base operacional, o projeto não promete percentuais."
+    },
+    "readiness": {
+      "title": "Pronto para evoluir",
+      "items": [
+        {
+          "title": "PWA mobile-first",
+          "description": "Instalável, funciona no celular da oficina"
+        },
+        {
+          "title": "3 idiomas",
+          "description": "PT, ES e EN com chaves sincronizadas"
+        },
+        {
+          "title": "Seguro por padrão",
+          "description": "Supabase Auth e isolamento por empresa"
+        },
+        {
+          "title": "Indicadores nativos",
+          "description": "Dashboard, SLA e relatórios de atendimento"
+        }
+      ]
+    },
+    "closing": {
+      "title": "Menos atrito para o cliente. Mais contexto para quem resolve."
+    },
+    "footer": "Projeto demonstrativo e não oficial, desenvolvido como proposta de inovação para o pós-venda técnico. Marcas e produtos citados servem apenas para contextualizar o protótipo."
+  }
 }

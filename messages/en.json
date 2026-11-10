@@ -18,7 +18,8 @@
     "english": "English",
     "goToProduct": "Open product",
     "learnMore": "Learn more",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "product": "Technical support"
   },
   "nav": {
     "home": "Home",
@@ -37,7 +38,10 @@
     "reports": "Reports",
     "settings": "Settings",
     "serviceDesk": "Service desk",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "catalog": "Catalogue",
+    "scanShort": "Scan",
+    "pitch": "Presentation"
   },
   "portal": {
     "greeting": "Hello, {name}",
@@ -61,7 +65,11 @@
     "welcome": "Welcome to Fersa support",
     "pendingVerification": "Your company is awaiting verification. You can already open and track tickets.",
     "signedInNotice": "Account linked to {organization}.",
-    "publicNotice": "Browse products and technical content without signing in. Create an account to open a ticket."
+    "publicNotice": "Browse products and technical content without signing in. Create an account to open a ticket.",
+    "catalogCta": "Browse catalogue",
+    "tryExamples": "Try: F400009, F15097, F15120, F200013 or F400012",
+    "pitchTitle": "Discover the Fersa Support project",
+    "pitchDescription": "Problem, solution, journey and pilot proposal"
   },
   "auth": {
     "title": "Access Fersa Support",
@@ -88,7 +96,7 @@
     "accountBlocked": "This account is blocked. Contact the Fersa team.",
     "signingIn": "Signing in…",
     "demoAccounts": "Demo accounts",
-    "demoHint": "Choose an account to fill in the fields, then select Sign in.",
+    "demoHint": "Pick a profile to jump straight into the demo.",
     "demoCustomer": "Customer user",
     "demoSupport": "Support team",
     "demoTechnician": "Field technician",
@@ -442,5 +450,270 @@
     "empty": "There are no visits scheduled in demo mode.",
     "checklist": "Visit checklist"
   },
-  "metadata": { "title": "Fersa Support" }
+  "metadata": {
+    "title": "Fersa Support"
+  },
+  "personas": {
+    "failed": "Could not sign in with the demo profile. Please try again.",
+    "demoCustomer": {
+      "title": "Customer / workshop",
+      "description": "Identifies the product, reads content and tracks their requests."
+    },
+    "demoSupport": {
+      "title": "Support team",
+      "description": "Receives, prioritises and solves requests with full context."
+    },
+    "demoTechnician": {
+      "title": "Field technician",
+      "description": "Takes escalated cases and records analysis or site visits."
+    },
+    "demoAdmin": {
+      "title": "Internal management",
+      "description": "Follows KPIs, companies, technicians and reports."
+    }
+  },
+  "catalog": {
+    "eyebrow": "Technical catalogue",
+    "title": "Find the right reference",
+    "subtitle": "Search by Part Number, application, vehicle maker or technical feature. Content is public and needs no sign-in.",
+    "searchPlaceholder": "E.g. Scania, ABS, F15097, front axle…",
+    "filterLabel": "Filter by family",
+    "results": "{count, plural, =0 {No products} one {# product} other {# products}}",
+    "open": "View technical sheet",
+    "emptyTitle": "No products found",
+    "emptyText": "Check your search term or clear the filters.",
+    "clear": "Clear filters",
+    "linesTitle": "Product lines",
+    "linesSubtitle": "Fersa portfolio families that can be added to the digital catalogue.",
+    "lines": [
+      {
+        "title": "Tapered roller bearings",
+        "description": "Carry combined radial and axial loads in wheels, axles and transmissions."
+      },
+      {
+        "title": "Wheel hubs and units",
+        "description": "Preset, lubricated assemblies, with or without an integrated ABS sensor."
+      },
+      {
+        "title": "Wheel bearing kits",
+        "description": "Everything the workshop needs for replacement under a single reference."
+      },
+      {
+        "title": "Transmission and differential",
+        "description": "Bearings for heavy-duty gearboxes and differentials."
+      }
+    ]
+  },
+  "pitch": {
+    "metaTitle": "Presentation",
+    "nav": {
+      "inicio": "Home",
+      "fersa": "Fersa",
+      "problema": "Problem",
+      "solucao": "Solution",
+      "jornada": "Journey",
+      "demo": "Live demo",
+      "piloto": "Pilot",
+      "enterDemo": "Open the demo"
+    },
+    "hero": {
+      "eyebrow": "Innovation proposal · Technical after-sales",
+      "title": "From Part Number to solution, in one digital journey.",
+      "subtitle": "Fersa Support connects distributors, workshops, fleets and the technical team: product identification, technical content, guided diagnosis and context-rich requests, in Portuguese, Spanish and English.",
+      "ctaDemo": "See the live demo",
+      "ctaJourney": "Understand the journey",
+      "hint": "Presenter tip: use ← and → (or a slide clicker) to move between sections.",
+      "desktopAlt": "Service desk with support KPIs",
+      "mobileAlt": "Customer portal on a phone"
+    },
+    "about": {
+      "eyebrow": "Context",
+      "title": "A global bearing reference deserves after-sales to match",
+      "body": "Fersa designs, manufactures and distributes high-performance bearings for commercial vehicles, cars and industry. With customers worldwide, every technical request spans different languages, applications and levels of expertise.",
+      "stats": [
+        {
+          "value": "1968",
+          "label": "Founded in Zaragoza, Spain"
+        },
+        {
+          "value": "100+",
+          "label": "countries with commercial presence"
+        },
+        {
+          "value": "3",
+          "label": "brands in the group: Fersa, NKE and A&S"
+        },
+        {
+          "value": "3",
+          "label": "continents with production: Europe, Asia and the Americas"
+        }
+      ],
+      "sectors": [
+        "Commercial vehicles",
+        "Automotive",
+        "Agriculture",
+        "Industrial"
+      ],
+      "source": "Source: public Fersa Group information. Figures for context only."
+    },
+    "problem": {
+      "eyebrow": "The problem",
+      "title": "Before solving anything, customers must reach the right information",
+      "body": "The friction is not only the technical issue. It is everything that happens before it reaches a specialist.",
+      "items": [
+        {
+          "title": "Poor product identification",
+          "description": "Incomplete Part Numbers, applications or OEM references lead to slow lookups and wrong replacements."
+        },
+        {
+          "title": "Disconnected channels",
+          "description": "Catalogue, manuals, diagnosis and requests live in different places with no continuity."
+        },
+        {
+          "title": "Low visibility",
+          "description": "Neither customer nor team can see history or request status in real time."
+        },
+        {
+          "title": "Triage rework",
+          "description": "Requests arrive without photos, symptoms or equipment data, causing back-and-forth."
+        }
+      ]
+    },
+    "solution": {
+      "eyebrow": "The solution",
+      "title": "One front door for technical after-sales",
+      "body": "An installable web app (PWA), built for the phone in the workshop and the desktop in the office. Every card below opens the real feature.",
+      "items": [
+        {
+          "title": "Scan and identify",
+          "description": "QR code or Part Number open the right technical sheet, no sign-in needed.",
+          "cta": "Open scanner"
+        },
+        {
+          "title": "Searchable catalogue",
+          "description": "Search by application, vehicle maker, OEM or technical feature.",
+          "cta": "Open catalogue"
+        },
+        {
+          "title": "Guided diagnosis",
+          "description": "Step-by-step help for the most frequent issues before raising a request.",
+          "cta": "Start diagnosis"
+        },
+        {
+          "title": "Context-rich request",
+          "description": "Product, symptoms, equipment, location and attachments reach support together.",
+          "cta": "Open a request"
+        },
+        {
+          "title": "Service desk and technicians",
+          "description": "Queue, priority, escalation to technicians, visits and reports.",
+          "cta": "See service desk"
+        },
+        {
+          "title": "Built for 3 languages",
+          "description": "Portuguese, Spanish and English in sync across the interface.",
+          "cta": "See it in Spanish"
+        }
+      ]
+    },
+    "journey": {
+      "eyebrow": "The journey",
+      "title": "One request, one history, as many levels as needed",
+      "body": "Customers solve simple cases on their own. Everything else reaches a specialist with full information.",
+      "steps": [
+        {
+          "title": "Identify",
+          "description": "QR code, Part Number or catalogue search."
+        },
+        {
+          "title": "Consult",
+          "description": "Technical sheet, manuals, videos and frequent issues."
+        },
+        {
+          "title": "Diagnose",
+          "description": "A guided checklist solves simple cases without a request."
+        },
+        {
+          "title": "Open request",
+          "description": "A wizard captures product, symptoms, photos and location."
+        },
+        {
+          "title": "Handle",
+          "description": "Support takes ownership and, if needed, calls a technician or visit."
+        },
+        {
+          "title": "Record",
+          "description": "The documented solution feeds the knowledge base."
+        }
+      ],
+      "publicLabel": "Open to everyone",
+      "publicText": "Products, catalogue, manuals and diagnosis need no account: any mechanic can look things up instantly.",
+      "protectedLabel": "Protected by sign-in",
+      "protectedText": "Requests, attachments, history and company data are isolated per organisation (Row Level Security)."
+    },
+    "demo": {
+      "eyebrow": "Live demo",
+      "title": "Try it now, as any profile",
+      "body": "The prototype works end to end. Sign in with one click as customer, support, technician or manager and follow the same request across the operation.",
+      "publicProduct": "F400009 sheet",
+      "publicDiagnosis": "Guided diagnosis",
+      "personasLabel": "One-click sign-in as",
+      "note": "Demo mode: data is stored only in this browser."
+    },
+    "pilot": {
+      "eyebrow": "Next steps",
+      "title": "Controlled pilot proposal",
+      "body": "Validate with real users before scaling. Benefits are hypotheses the pilot must measure against an agreed baseline.",
+      "phases": [
+        {
+          "label": "Phase 1",
+          "title": "Pilot",
+          "description": "One product line, one country and a group of partner distributors and workshops."
+        },
+        {
+          "label": "Phase 2",
+          "title": "Integration",
+          "description": "Connect the official catalogue, CRM/ERP and corporate sign-in; expand technical content."
+        },
+        {
+          "label": "Phase 3",
+          "title": "Scale",
+          "description": "Expand to new markets and languages based on pilot KPIs."
+        }
+      ],
+      "metricsTitle": "What to measure in the pilot",
+      "metrics": [
+        "Time to open a request",
+        "Data completeness on first submission",
+        "Cases solved without a request (self-service)",
+        "Perceived satisfaction of customers and staff"
+      ],
+      "metricsNote": "Without an operational baseline, the project promises no percentages."
+    },
+    "readiness": {
+      "title": "Ready to evolve",
+      "items": [
+        {
+          "title": "Mobile-first PWA",
+          "description": "Installable, works on the workshop phone"
+        },
+        {
+          "title": "3 languages",
+          "description": "PT, ES and EN with synchronised keys"
+        },
+        {
+          "title": "Secure by default",
+          "description": "Supabase Auth and per-company isolation"
+        },
+        {
+          "title": "Built-in KPIs",
+          "description": "Dashboard, SLA and support reports"
+        }
+      ]
+    },
+    "closing": {
+      "title": "Less friction for customers. More context for those who solve."
+    },
+    "footer": "Unofficial demonstration project, built as an innovation proposal for technical after-sales. Brands and products mentioned only provide context for the prototype."
+  }
 }
